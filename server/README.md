@@ -1,4 +1,4 @@
-# C R A F F I C WEB-CLIENT
+# C R A F F I C SERVER / API
 A modern Graphic-Novel Library
 
 <p align="center">

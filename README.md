@@ -9,6 +9,6 @@ This web project was bootstrapped with [Create React App](https://github.com/fac
 
 ## SERVER / API
 ### Getting Started with NestJS
-A progressive [http://nodejs.org](Node.js) framework for building efficient and scalable server-side applications. This server project was bootstrapped with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A progressive [NodeJS](https://nodejs.org) framework for building efficient and scalable server-side applications. This server project was bootstrapped with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 [Goto server project README](./server/README.md)

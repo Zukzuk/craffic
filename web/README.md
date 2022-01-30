@@ -1,4 +1,4 @@
-# C R A F F I C SERVER / API
+# C R A F F I C WEB-CLIENT
 A modern Graphic-Novel Library
 
 ## Getting Started with Create React App
