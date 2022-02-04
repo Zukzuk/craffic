@@ -1,19 +1,50 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Put, Delete, Patch, Param, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
+import { createTestDto, updateTestDto, patchTestDto } from '../dto/test.dto';
+import { ITest } from '../interfaces';
 import { TestService } from './test.service';
 
 @ApiTags('Test')
 @Controller('test')
 export class TestController {
-  constructor(private readonly testService: TestService) {}
+  constructor(private service: TestService) {}
 
-  @Get(':id')
-  getHello(): string {
-    return this.testService.getResponse();
+  @ApiOperation({
+    summary: 'Create a new test item'
+  })
+  @Post()
+  async create(@Body() dto: createTestDto) {
+    this.service.create(dto);
   }
 
-  @Post() 
-  postExample(): string {
-    return this.testService.postResponse()
+  @Get()
+  async findAll(): Promise<ITest[]> {
+    return this.service.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.service.findOne(Number(id));
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() dto: updateTestDto) {
+    return this.service.update(Number(id), dto);
+  }
+
+  @Patch(':id')
+  patch(@Param('id') id: string, @Body() dto: patchTestDto) {
+    return this.service.patch(Number(id), dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.service.remove(Number(id));
+  }
+  
+  @Post('/reset')
+  reset() {
+    return this.service.reset();
   }
 }

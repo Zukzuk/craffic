@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(testController.getHello()).toBe('Hello World!');
+    it('should return empty falsy (empty array)', () => {
+      expect(testController.findAll()).toBe([]);
     });
   });
 });

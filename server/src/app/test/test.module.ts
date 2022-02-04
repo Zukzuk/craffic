@@ -10,6 +10,6 @@ import { TestController } from './test.controller';
   controllers: [TestController],
   providers: [TestService],
   imports: [],
-  exports: [TestService]
+  exports: []
 })
 export class TestModule {}
