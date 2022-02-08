@@ -15,3 +15,9 @@ export interface ITest {
   age?: number;
   breed?: TBreed;
 }
+
+export interface IBook {
+  name: string;
+  coverPage: string;
+  numPages: number;
+}

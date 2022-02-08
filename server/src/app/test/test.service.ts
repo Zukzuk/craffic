@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { createTestDto, updateTestDto, patchTestDto } from '../dto/test.dto';
-import { ITest } from '../interfaces';
+import { IBook, ITest } from '../interfaces';
+import { Cbz } from '../zip/Cbz'
 
 @Injectable()
 export class TestService {
@@ -60,5 +61,11 @@ export class TestService {
   remove(id: number): string {
     this.tests.filter((item) => item.id === id);
     return `item removed`;
+  }
+
+  async sync() {
+    const cbz = new Cbz();
+    const book: IBook = await cbz.read();
+    return `detected ${book.name} with ${book.numPages} pages`;
   }
 }

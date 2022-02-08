@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TestController } from './test.controller';
 import { TestService } from './test.service';
 
-describe('AppController', () => {
+describe('TestController', () => {
   let testController: TestController;
 
   beforeEach(async () => {
@@ -14,9 +14,12 @@ describe('AppController', () => {
     testController = app.get<TestController>(TestController);
   });
 
-  describe('root', () => {
-    it('should return empty falsy (empty array)', () => {
-      expect(testController.findAll()).toBe([]);
+  describe('findOne', () => {
+    it('should return an item on id: 1', () => {
+      expect(testController.findOne("1")).toStrictEqual({
+        id: 1,
+        name: "test1"
+      });
     });
   });
 });

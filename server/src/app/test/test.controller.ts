@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Patch, Param, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { ApiImplicitBody } from '@nestjs/swagger/dist/decorators/api-implicit-body.decorator';
 import { createTestDto, updateTestDto, patchTestDto } from '../dto/test.dto';
 import { ITest } from '../interfaces';
 import { TestService } from './test.service';
