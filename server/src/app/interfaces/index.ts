@@ -17,7 +17,7 @@ export interface ITest {
 }
 
 export interface IBook {
-  name: string;
+  file: string;
   coverPage: string;
   numPages: number;
 }

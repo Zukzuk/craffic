@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { createTestDto, updateTestDto, patchTestDto } from '../dto/test.dto';
 import { IBook, ITest } from '../interfaces';
-import { Cbz } from '../zip/Cbz'
+import { Extractor } from '../utils/extractor';
 
 @Injectable()
 export class TestService {
-  private idIndex: number = 0;
+  private idIndex = 0;
   private initialDto = () => {
     return { id: ++this.idIndex, name: 'test1' } as ITest;
   };
@@ -24,6 +24,7 @@ export class TestService {
     this.idIndex = 0;
     this.tests.splice(0, this.tests.length);
     this.tests.push(this.initialDto());
+    this.sync();
   }
 
   findAll(): ITest[] {
@@ -39,14 +40,14 @@ export class TestService {
     throw new NotFoundException(`Test with id: ${id} could not be found`);
   }
 
-  update(id: number, dto:updateTestDto): string {
+  update(id: number, dto: updateTestDto): string {
     const index = this.tests.findIndex((item) => item.id === id);
     const item = this.tests[index];
     this.tests[index] = { id, ...item, ...dto } as ITest;
     return `item updated`;
   }
 
-  patch(id: number, {name, age, breed}: patchTestDto): string {
+  patch(id: number, { name, age, breed }: patchTestDto): string {
     this.tests.map<ITest>((item) => {
       if (item.id === id) {
         if (name) item.name = name;
@@ -64,8 +65,8 @@ export class TestService {
   }
 
   async sync() {
-    const cbz = new Cbz();
-    const book: IBook = await cbz.read();
-    return `detected ${book.name} with ${book.numPages} pages`;
+    const extractor = new Extractor();
+    extractor.read('../library', ['FearAgent.cbz', '2000AD-2268.cbr']);
+    // return `detected ${book.file} with ${book.numPages} pages`;
   }
 }
