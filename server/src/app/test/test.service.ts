@@ -31,7 +31,7 @@ export class TestService {
     return this.tests;
   }
 
-  findOne(id: number): ITest | NotFoundException {
+  findOne(id: number): ITest {
     const result = this.tests.reduce<ITest | false>((acc, item) => {
       if (!acc && item.id === id) acc = item;
       return acc;

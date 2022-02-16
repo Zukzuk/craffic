@@ -2,7 +2,7 @@ import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 
 import AppHeader from "./AppHeader";
-import ProfileMenu from "./ProfileMenu";
+import ProfileMenu from "../components/ProfileMenu";
 import AppDrawer from "./AppDrawer";
 
 export default function AppMenu() {

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { IMAGE_DUMMY } from './utils/constants'
+import { IMAGE_DUMMY } from '../utils/constants'
 
 export default function MediaControlCard() {
   const theme = useTheme();
@@ -18,8 +18,8 @@ export default function MediaControlCard() {
     <Card sx={{ display: 'flex', width: 200 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h6">
-            Live From Space
+          <Typography component="div" variant="h6" sx={{ flex: '1 0 auto', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+            Live From Space in the House through the Roof
           </Typography>
           <Typography variant="subtitle2" color="text.secondary" component="div">
             Mac Miller

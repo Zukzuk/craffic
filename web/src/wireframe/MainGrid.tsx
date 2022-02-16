@@ -1,12 +1,8 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import MediaControlCard from "./MediaControlCard";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import MediaControlCard from "../components/MediaControlCard";
+import { Drawer } from "@mui/material";
+import AlphabetSelectList from "../components/AlphabetSelectList";
 
 const mapGrid = (amount: number) => {
   let i = 0,
@@ -36,18 +32,7 @@ export default function MainGrid() {
         anchor="right"
         open={true}
       >
-        <List dense={true} sx={{ 
-          display: 'flex',
-          flexDirection: 'column',
-          top: 60,
-          overflowY: 'hidden'   
-        }}>
-          {["#", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"].map((text, index) => (
-            <ListItem button key={text} sx={{ textAlign: 'center', p:0, pl:1, pr:1.5 }}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <AlphabetSelectList />
       </Drawer>
       <Grid container spacing={3}>
         {mapGrid(50)}

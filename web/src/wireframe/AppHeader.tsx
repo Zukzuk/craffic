@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { DRAWER_WIDTH } from "./utils/constants";
+import { DRAWER_WIDTH } from "../utils/constants";
 
 interface IAppBarProps extends AppBarProps {
   open?: boolean;
