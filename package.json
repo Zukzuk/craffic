@@ -1,0 +1,14 @@
+{
+    "name": "Craffic",
+    "version": "0.0.1",
+    "description": "A modern Graphic-Novel Library",
+    "author": "",
+    "private": true,
+    "license": "UNLICENSED",
+    "scripts": {
+    },
+    "engines": {
+        "npm": ">=8.0.0",
+        "node": ">=16.0.0"
+    }
+}

@@ -7,17 +7,21 @@ export interface ValidationPipeOptions extends ValidatorOptions {
   exceptionFactory?: (errors: ValidationError[]) => any;
 }
 
-export type TBreed = 'cat' | 'dog';
-
-export interface ITest {
+export interface IItem {
   id: number;
-  name: string;
-  age?: number;
-  breed?: TBreed;
+  author: string;
+  title: string;
+  shortTitle?: string;
+  description?: string;
+  image: string;
 }
 
-export interface IBook {
+export type TItemType = 'comic' | 'book' | 'movie' | 'episode';
+
+export interface IComic {
+  type: TItemType;
   file: string;
+  fileLocation: string;
   coverPage: string;
   numPages: number;
 }

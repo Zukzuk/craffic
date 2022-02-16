@@ -1,6 +1,7 @@
 import * as StreamZip from 'node-stream-zip';
 import * as fs from 'fs';
 import * as unrar from 'node-unrar-js';
+import { IComic } from '../interfaces';
 
 export class Extractor {
   public read(dir: string, files: string[]): void {
@@ -8,13 +9,20 @@ export class Extractor {
       const file = dir + '/' + fileName; // this can now run into double /
       const fileParts = fileName.split('.');
       const extension = fileParts[fileParts.length - 1];
-      if (extension === 'cbz') this.extractZip(file);
-      else if (extension === 'cbr') this.extractRar(file);
-      else throw new Error(`Unrecognized file format ${extension}`);
+      switch (extension) {
+        case 'cbz':
+          this.extractZip(file);
+          break;
+        case 'cbr':
+          this.extractRar(file);
+          break;
+        default:
+          throw new Error(`Unrecognized file format ${extension}`);
+      }
     });
   }
 
-  private async extractZip(file: string): Promise<void> {
+  private async extractZip(file: string): Promise<IComic> {
     let zip;
     try {
       // read the archive
@@ -31,10 +39,20 @@ export class Extractor {
 
       // extract cover page
       const coverPage = firstEntry.name.split('/').join('_');
-      await zip.extract(firstEntry.name, `../library/${coverPage}`);
+      const fileLocation = `../library/${coverPage}`;
+      await zip.extract(firstEntry.name, location);
 
       // close the file once done
       await zip.close();
+
+      // return payload
+      return {
+        type: 'comic',
+        file: firstEntry.name,
+        fileLocation,
+        coverPage,
+        numPages,
+      };
     } catch (err) {
       // close the file to prevent memory leak
       if (zip) await zip.close();
@@ -44,7 +62,7 @@ export class Extractor {
     }
   }
 
-  private async extractRar(file: string): Promise<void> {
+  private async extractRar(file: string): Promise<IComic> {
     try {
       // read the archive
       const archive = await fs.promises.readFile(file);
@@ -64,10 +82,20 @@ export class Extractor {
       const coverPage = firstEntry.name.split('/').join('_');
       const extracted = extractor.extract({ files: [firstEntry.name] });
       const files = [...extracted.files]; //load the files
+      const fileLocation = `../library/${coverPage}`;
       await fs.promises.writeFile(
-        `../library/${coverPage}`,
+        fileLocation,
         files[0].extraction, // Uint8Array content, createExtractorFromData only
       );
+
+      // return payload
+      return {
+        type: 'comic',
+        file: firstEntry.name,
+        fileLocation,
+        coverPage,
+        numPages,
+      };
     } catch (err) {
       // throw error
       throw new Error(err);

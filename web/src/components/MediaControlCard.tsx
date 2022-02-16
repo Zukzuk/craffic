@@ -9,27 +9,35 @@ import Typography from '@mui/material/Typography';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { IMAGE_DUMMY } from '../utils/constants'
+import { MOCK_CONTENT } from '../utils/constants'
 
 export default function MediaControlCard() {
   const theme = useTheme();
 
   return (
-    <Card sx={{ display: 'flex', width: 200 }}>
+    <Card sx={{ display: 'flex', width: 190 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h6" sx={{ flex: '1 0 auto', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-            Live From Space in the House through the Roof
+          <Typography component="div" variant="h6" sx={
+            {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              lineClamp: 2,
+              boxOrient: 'vertical',
+            }
+          }>
+            {`${MOCK_CONTENT.title}`}
           </Typography>
           <Typography variant="subtitle2" color="text.secondary" component="div">
-            Mac Miller
+            {`${MOCK_CONTENT.author}`}
           </Typography>
         </CardContent>
         <CardMedia
           component="img"
-          image={IMAGE_DUMMY}
+          image={MOCK_CONTENT.image}
           sx={{ display: 'flex' }}
-          alt="Live from space album cover"
+          alt="Live from Space cover"
         />
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: .5, pb: .5}}>
           <IconButton aria-label="previous">
