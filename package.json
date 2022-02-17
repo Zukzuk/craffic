@@ -10,10 +10,12 @@
         "node": ">=16.0.0"
     },
     "devDependencies": {
+        "concurrently": "^7.0.0",
         "husky": "^7.0.4",
         "lint-staged": "^12.3.4"
     },
     "scripts": {
+        "dev": "concurrently --kill-others \"cd server && npm run start:dev\" \"cd web && npm run start\"",
         "prepare": "husky install"
     }
 }
