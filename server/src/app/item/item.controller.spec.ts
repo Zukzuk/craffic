@@ -86,7 +86,7 @@ describe('ItemController', () => {
   describe('delete', () => {
     it('should remove the Item on id: 1', async () => {
       expect(await testController.remove('1')).toStrictEqual(
-        'Item with id: 1 removed',
+        'Succesfully removed Item with id: 1',
       );
     });
   });

@@ -18,7 +18,7 @@ export interface IItem {
 
 export type TItemType = 'comic' | 'book' | 'movie' | 'episode';
 
-export interface IComic {
+export interface IComicFileData {
   type: TItemType;
   file: string;
   fileLocation: string;

@@ -1,7 +1,7 @@
 import * as StreamZip from 'node-stream-zip';
 import * as fs from 'fs';
 import * as unrar from 'node-unrar-js';
-import { IComic } from '../interfaces';
+import { IComicFileData } from '../interfaces';
 
 export class Extractor {
   public read(dir: string, files: string[]): void {
@@ -22,7 +22,7 @@ export class Extractor {
     });
   }
 
-  private async extractZip(file: string): Promise<IComic> {
+  private async extractZip(file: string): Promise<IComicFileData> {
     let zip;
     try {
       // read the archive
@@ -62,7 +62,7 @@ export class Extractor {
     }
   }
 
-  private async extractRar(file: string): Promise<IComic> {
+  private async extractRar(file: string): Promise<IComicFileData> {
     try {
       // read the archive
       const archive = await fs.promises.readFile(file);

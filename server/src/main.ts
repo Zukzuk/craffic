@@ -3,18 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as chokidar from 'chokidar';
-import * as glob  from 'glob';
-
-
-class TreeNode {
-  public path: string;
-  public children: Array<TreeNode>;
-
-  constructor(path: string) {
-    this.path = path;
-    this.children = [];
-  }
-}
+import * as glob from 'glob';
 
 async function bootstrap() {
   // Initialize NestJS app
@@ -26,17 +15,18 @@ async function bootstrap() {
   // Add Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Craffic API')
-    .setDescription('The Craffic API')
-    .setVersion('1.0')
+    .setDescription('A modern Graphic-Novel Library')
+    .setVersion('0.0.1')
     .addTag('craffic')
+    .setExternalDoc('Download JSON Specifications', '/swagger-json')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
   // async dirTree for offline syncing
-  function getDirectories (callback) {
+  function getDirectories(callback) {
     glob('../library/**/*/', callback);
-  };
+  }
   getDirectories((err, res) => {
     if (err) console.log('Error', err);
     else console.log(res);
