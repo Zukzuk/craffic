@@ -23,7 +23,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "./node_modules/.bin/eslint ./src",
     "test": "react-scripts test",
+    "test:cov": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

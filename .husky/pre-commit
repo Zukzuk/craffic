@@ -1,3 +1,3 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-./node_modules/.bin/concurrently "npx lint-staged" "cd ./server && npm run test:cov && exit" "cd web && CI=true npm test --coverage"
+npm run test
