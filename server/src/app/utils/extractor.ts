@@ -117,7 +117,7 @@ export class Extractor {
         );
       })
       .sort(function (a, b) {
-        // sort alphabetically case-insensitive
+        // sort alphabetically and case-insensitive
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
   }

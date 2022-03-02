@@ -12,3 +12,8 @@ This web project was bootstrapped with [Create React App](https://github.com/fac
 A progressive [NodeJS](https://nodejs.org) framework for building efficient and scalable server-side applications. This server project was bootstrapped with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 [Goto server project README](./server/README.md)
+
+## DATABASE / TypeORM
+### Getting Started with PostgreSQl
+NestJS, TypeORM and PostgreSQL — full example development and project setup working with database migrations.
+[Medium](https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f)

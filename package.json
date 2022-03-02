@@ -15,8 +15,9 @@
         "lint-staged": "^12.3.4"
     },
     "scripts": {
-        "dev": "concurrently --kill-others \"cd server && npm run start:dev\" \"cd web && npm run start\"",
-        "precommit": "concurrently \"npx lint-staged\" \"cd ./server && npm run test:cov && exit\" \"cd web && CI=true npm run test:cov\"",
+        "dev": "concurrently --kill-others \"cd server && npm run start:dev\" \"cd web && npm run start\" \"docker-compose up\"",
+        "dev:iterm": "osascript itermtabs.applescript",
+        "precommit": "concurrently \"cd ./server && npm run lint && npm run test:cov && exit\" \"cd web && npm run lint && CI=true npm run test:cov\"",
         "test:server": "cd ./server && npm run lint && npm run test:cov && exit",
         "test:web": "cd ./web && npm run lint && CI=true npm run test:cov",
         "prepare": "husky install"
