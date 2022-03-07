@@ -24,17 +24,14 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   // async dirTree for offline syncing
-  function getDirectories(callback) {
-    glob('../library/**/*/', callback);
-  }
-  getDirectories((err, res) => {
+  glob('../library/**/*/', (err, res) => {
     if (err) console.log('Error', err);
-    else console.log(res);
+    else console.log('dirTree finds:', res);
   });
 
-  // chokidar watcher
+  // chokidar watcher for realtime syncing
   chokidar.watch('../library').on('all', (event, path) => {
-    //console.log(event, path);
+    console.log('chokidar finds:', event, path);
   });
 
   // serve

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { createItemDto, patchItemDto, updateItemDto } from '../dto/item.dto';
+import { ExtractorService } from '../providers/extractor.service';
 import { ItemController } from './item.controller';
 import { ItemService } from './item.service';
 
@@ -9,7 +10,7 @@ describe('ItemController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ItemController],
-      providers: [ItemService],
+      providers: [ItemService, ExtractorService],
     }).compile();
 
     testController = app.get<ItemController>(ItemController);

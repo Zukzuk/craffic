@@ -1,10 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { createItemDto, updateItemDto, patchItemDto } from '../dto/item.dto';
 import { IItem } from '../interfaces';
-import { Extractor } from '../utils/extractor';
+import { ExtractorService } from '../providers/extractor.service';
 
 @Injectable()
 export class ItemService {
+  constructor(private extractor: ExtractorService) {}
+
   private idIndex = 0;
   private initialDto = () => {
     return {
@@ -25,7 +28,7 @@ export class ItemService {
 
   findAll(): IItem[] {
     if (this.items !== undefined) return this.items;
-    throw new NotFoundException(`Item collection could not be found`);
+    throw new NotFoundException(`Collection could not be found`);
   }
 
   findOne(id: number): IItem {
@@ -76,9 +79,8 @@ export class ItemService {
     if (index >= 0) {
       this.items.splice(index, 1);
       return `Succesfully removed Item with id: ${id}`;
-    } else {
-      throw new NotFoundException(`Item with id: ${id} could not be found`);
     }
+    throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
   reset() {
@@ -93,7 +95,6 @@ export class ItemService {
   }
 
   async sync() {
-    const extractor = new Extractor();
-    extractor.read('../library', ['FearAgent.cbz', '2000AD-2268.cbr']);
+    this.extractor.read('../library', ['FearAgent.cbz', '2000AD-2268.cbr']);
   }
 }
