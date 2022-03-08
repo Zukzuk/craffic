@@ -5,21 +5,25 @@ tell application "iTerm"
         tell current session
             set name to "PostgreSQL"
             write text "docker-compose up"
+            activate
         end tell
 
         -- create tab to run server and client
         create tab with default profile
         tell current session
             set name to "NestJS Server / API"
-            write text "cd server && npm run start:dev"
-            -- split tab vertically to run client
-            split vertically with default profile
+            write text "cd ./server && npm run start:dev"
+            activate
+            -- -- split tab vertically to run client
+            -- split vertically with default profile
         end tell
 
-        -- run client
-        tell last session of last tab
-            set name to "ReactJS Web Client"
-            write text "cd web && npm run start"
+        -- create tab to run client
+        create tab with default profile
+        tell current session
+            set name to "ReactJS"
+            write text "cd ./web && npm run start"
+            activate
         end tell
 
         tell application "Google Chrome"
