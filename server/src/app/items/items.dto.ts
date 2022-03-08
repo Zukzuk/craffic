@@ -1,7 +1,16 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  PartialType,
+  PickType,
+} from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
-export class BaseItemDto {
+export class ItemDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly id: string;
+
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
@@ -22,4 +31,12 @@ export class BaseItemDto {
   @ApiProperty()
   readonly image: string;
 }
-export class AllOptionalItemDto extends PartialType(BaseItemDto) {}
+
+export class BaseItemDto extends PickType(ItemDto, [
+  'author',
+  'title',
+  'description',
+  'image',
+] as const) {}
+
+export class PartialItemDto extends PartialType(BaseItemDto) {}

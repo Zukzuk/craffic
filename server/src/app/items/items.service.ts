@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BaseItemDto, AllOptionalItemDto } from './items.dto';
+import { BaseItemDto, PartialItemDto } from './items.dto';
 import { IItem } from '../interfaces';
 import { ExtractorService } from '../providers/extractor.service';
 
@@ -53,7 +53,7 @@ export class ItemsService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
-  async patch(id: number, patch: AllOptionalItemDto) {
+  async patch(id: number, patch: PartialItemDto) {
     let patchedItem: IItem;
     await this.items.map<IItem>((item) => {
       if (item.id === id) {

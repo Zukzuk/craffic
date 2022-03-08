@@ -7,9 +7,11 @@ import {
   Patch,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { BaseItemDto, AllOptionalItemDto } from './items.dto';
+import { JwtAuthGuard } from '../auth/auth.guards';
+import { BaseItemDto, PartialItemDto } from './items.dto';
 import { ItemsService } from './items.service';
 
 @ApiTags('Items')
@@ -21,8 +23,9 @@ export class ItemsController {
     summary: 'Create a new item',
   })
   @Post()
-  create(@Body() dto: BaseItemDto) {
-    return this.itemsService.create(dto);
+  @UseGuards(JwtAuthGuard)
+  create(@Body() itemData: BaseItemDto) {
+    return this.itemsService.create(itemData);
   }
 
   @ApiOperation({
@@ -45,16 +48,16 @@ export class ItemsController {
     summary: 'Update an item by ID',
   })
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: BaseItemDto) {
-    return this.itemsService.update(Number(id), dto);
+  update(@Param('id') id: string, @Body() itemData: BaseItemDto) {
+    return this.itemsService.update(Number(id), itemData);
   }
 
   @ApiOperation({
     summary: 'Update a part of an item by ID',
   })
   @Patch(':id')
-  patch(@Param('id') id: string, @Body() dto: AllOptionalItemDto) {
-    return this.itemsService.patch(Number(id), dto);
+  patch(@Param('id') id: string, @Body() partialItemData: PartialItemDto) {
+    return this.itemsService.patch(Number(id), partialItemData);
   }
 
   @ApiOperation({

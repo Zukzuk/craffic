@@ -6,11 +6,14 @@ import * as Joi from '@hapi/joi';
 import { ItemsModule } from './app/items/items.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './app/users/users.module';
+import { AuthModule } from './app/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),
@@ -24,8 +27,9 @@ import { UsersModule } from './app/users/users.module';
     }),
     // See also migration strategy: https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
     DatabaseModule,
-    ItemsModule,
+    AuthModule,
     UsersModule,
+    ItemsModule,
   ],
   controllers: [],
   providers: [],

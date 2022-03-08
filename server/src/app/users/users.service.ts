@@ -11,16 +11,24 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
+  async create(userData: BaseUserDto) {
+    const newUser = await this.usersRepository.create(userData);
+    await this.usersRepository.save(newUser);
+
+    return newUser;
+  }
+
+  async getById(id: number) {
+    const user = await this.usersRepository.findOne({ id });
+
+    if (user) return user;
+    throw new NotFoundException(`User with id: ${id} does not exist`);
+  }
+
   async getByEmail(email: string) {
     const user = await this.usersRepository.findOne({ email });
 
     if (user) return user;
-    throw new NotFoundException(`User with this email does not exist`);
-  }
-
-  async create(dto: BaseUserDto) {
-    const newUser = await this.usersRepository.create(dto);
-    await this.usersRepository.save(newUser);
-    return newUser;
+    throw new NotFoundException(`User with email: ${email} does not exist`);
   }
 }

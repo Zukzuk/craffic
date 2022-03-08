@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BaseItemDto, AllOptionalItemDto } from './items.dto';
+import { BaseItemDto, PartialItemDto } from './items.dto';
 import { ExtractorService } from '../providers/extractor.service';
 import { ItemsController } from './items.controller';
 import { ItemsService } from './items.service';
@@ -80,7 +80,7 @@ describe('ItemsController', () => {
 
   describe('patch', () => {
     it('should return a patched Item on id: 1', async () => {
-      const patchItem: AllOptionalItemDto = {
+      const patchItem: PartialItemDto = {
         author: 'Kees Klomp',
       };
       expect(await controller.patch('1', patchItem)).toStrictEqual({
