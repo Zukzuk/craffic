@@ -9,10 +9,11 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './auth.guards';
-import { LogInDto, RegisterDto } from './register.dto';
+import { LogInDto } from './dtos/auth.dto';
 import { Response } from 'express';
 import { RequestWithUser } from './auth.interface';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { BaseUserDto } from '../users/dtos/users.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -20,7 +21,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() registrationData: RegisterDto) {
+  async register(@Body() registrationData: BaseUserDto) {
     return this.authService.register(registrationData);
   }
 

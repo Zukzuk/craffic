@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BaseItemDto, PartialItemDto } from './items.dto';
+import { BaseItemDto, PartialItemDto } from './dtos/items.dto';
 import { ExtractorService } from '../providers/extractor.service';
 import { ItemsController } from './items.controller';
 import { ItemsService } from './items.service';

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BaseItemDto, PartialItemDto } from './items.dto';
+import { BaseItemDto, PartialItemDto } from './dtos/items.dto';
 import { IItem } from '../interfaces';
 import { ExtractorService } from '../providers/extractor.service';
 

@@ -1,11 +1,11 @@
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { RegisterDto } from './register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import PostgresErrorCode from 'src/database/postgresErrorCode.enum';
+import PostgresErrorCode from 'src/database/enums/postgresErrorCode.enum';
 import { TokenPayload } from './auth.interface';
+import { BaseUserDto } from '../users/dtos/users.dto';
 
 /*
 Authentication means checking the identity of user. It provides an answer to a question: who is the user?
@@ -19,7 +19,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async register(registrationData: RegisterDto) {
+  public async register(registrationData: BaseUserDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/auth.guards';
-import { BaseItemDto, PartialItemDto } from './items.dto';
+import { BaseItemDto, PartialItemDto } from './dtos/items.dto';
 import { ItemsService } from './items.service';
 
 @ApiTags('Items')
