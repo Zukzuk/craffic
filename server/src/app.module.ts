@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
 // modules
-import { ItemModule } from './app/items/item.module';
+import { ItemsModule } from './app/items/items.module';
 import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './app/users/users.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { DatabaseModule } from './database/database.module';
     }),
     // See also migration strategy: https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
     DatabaseModule,
-    ItemModule,
+    ItemsModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],

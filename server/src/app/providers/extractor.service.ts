@@ -4,25 +4,30 @@ import * as unrar from 'node-unrar-js';
 import { IComicFileData } from '../interfaces';
 
 export class ExtractorService {
-  public read(dir: string, files: string[]): void {
+  public async read(dir: string, files: string[]): Promise<string> {
+    const queue: Promise<IComicFileData>[] = [];
+
     files.forEach((fileName) => {
       const file = dir + '/' + fileName; // this can now run into double /
       const fileParts = fileName.split('.');
       const extension = fileParts[fileParts.length - 1];
-      const stats = fs.statSync(fileName);
+      const stats = fs.statSync(file);
       const fileSizeInBytes: number = stats.size;
 
       switch (extension) {
         case 'cbz':
-          this.extractZip(file, fileSizeInBytes);
+          queue.push(this.extractZip(file, fileSizeInBytes));
           break;
         case 'cbr':
-          this.extractRar(file, fileSizeInBytes);
+          queue.push(this.extractRar(file, fileSizeInBytes));
           break;
         default:
           throw new Error(`Unrecognized file format ${extension}`);
       }
     });
+
+    const extractedList = await Promise.all(queue);
+    return `Succesfully extracted all files: ${JSON.stringify(extractedList)}`;
   }
 
   private async extractZip(
@@ -46,7 +51,7 @@ export class ExtractorService {
       // extract cover page
       const coverPage = firstEntry.name.split('/').join('_');
       const fileLocation = `../library/${coverPage}`;
-      await zip.extract(firstEntry.name, location);
+      await zip.extract(firstEntry.name, fileLocation);
 
       // close the file once done
       await zip.close();

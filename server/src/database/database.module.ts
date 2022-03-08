@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // entities
-import { ItemEntity } from '../app/items/item.entity';
-import { UserEntity } from '../app/users/user.entity';
+import { ItemEntity } from '../app/items/items.entity';
+import { UserEntity } from '../app/users/users.entity';
 
 @Module({
   imports: [

@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
-import { createItemDto, updateItemDto, patchItemDto } from '../dto/item.dto';
+import { BaseItemDto, AllOptionalItemDto } from './items.dto';
 import { IItem } from '../interfaces';
 import { ExtractorService } from '../providers/extractor.service';
 
 @Injectable()
-export class ItemService {
+export class ItemsService {
   constructor(private extractor: ExtractorService) {}
 
   private idIndex = 0;
@@ -20,19 +19,19 @@ export class ItemService {
   };
   private readonly items: IItem[] = [this.initialDto()];
 
-  create(dto: createItemDto): IItem {
+  async create(dto: BaseItemDto) {
     const item = { id: ++this.idIndex, ...dto } as IItem;
-    this.items.push(item);
+    await this.items.push(item);
     return item;
   }
 
-  findAll(): IItem[] {
-    if (this.items !== undefined) return this.items;
+  async findAll() {
+    if (this.items !== undefined) return await this.items;
     throw new NotFoundException(`Collection could not be found`);
   }
 
-  findOne(id: number): IItem {
-    const result = this.items.reduce<IItem | false>((acc, item) => {
+  async findOne(id: number) {
+    const result = await this.items.reduce<IItem | false>((acc, item) => {
       if (!acc && item.id === id) acc = item;
       return acc;
     }, false);
@@ -41,9 +40,9 @@ export class ItemService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
-  update(id: number, dto: updateItemDto): IItem {
-    let updatedItem;
-    const index = this.items.findIndex((item) => item.id === id);
+  async update(id: number, dto: BaseItemDto) {
+    let updatedItem: IItem;
+    const index = await this.items.findIndex((item) => item.id === id);
     if (index >= 0) {
       const item = this.items[index];
       updatedItem = { id, ...item, ...dto } as IItem;
@@ -54,9 +53,9 @@ export class ItemService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
-  patch(id: number, patch: patchItemDto): IItem {
-    let patchedItem;
-    this.items.map<IItem>((item) => {
+  async patch(id: number, patch: AllOptionalItemDto) {
+    let patchedItem: IItem;
+    await this.items.map<IItem>((item) => {
       if (item.id === id) {
         for (const [key, value] of Object.entries(patch)) {
           item[key] = value;
@@ -70,8 +69,8 @@ export class ItemService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
-  remove(id: number): string {
-    const index = this.items.reduce<number>((acc, item, index) => {
+  async remove(id: number) {
+    const index = await this.items.reduce<number>((acc, item, index) => {
       if (acc < 0 && item.id === id) acc = index;
       return acc;
     }, -1);
@@ -83,7 +82,7 @@ export class ItemService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
-  reset() {
+  async reset() {
     try {
       this.idIndex = 0;
       this.items.splice(0, this.items.length);
@@ -95,6 +94,11 @@ export class ItemService {
   }
 
   async sync() {
-    this.extractor.read('../library', ['FearAgent.cbz', '2000AD-2268.cbr']);
+    const extractedMsg = this.extractor.read('../library', [
+      'FearAgentFolders.cbz',
+      '2000AD-2268.cbr',
+    ]);
+
+    return extractedMsg;
   }
 }

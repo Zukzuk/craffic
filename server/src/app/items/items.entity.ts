@@ -32,8 +32,20 @@ import { BaseEntity } from '../../database/base.entity';
 @Entity({ name: 'item' })
 export class ItemEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 300 })
-  name: string;
+  public author: string;
 
   @Column({ type: 'varchar', length: 300 })
-  description: string;
+  public artist: string;
+
+  @Column({ type: 'varchar', length: 300 })
+  public title: string;
+
+  @Column({ type: 'varchar' })
+  public description: string;
+
+  @Column()
+  public year: number;
+
+  @Column()
+  public language: string;
 }

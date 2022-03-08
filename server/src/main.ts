@@ -30,7 +30,10 @@ async function bootstrap() {
   });
 
   // chokidar watcher for realtime syncing
-  chokidar.watch('../library').on('all', (event, path) => {
+  const watcher = chokidar.watch('../library', {
+    ignored: /[\/\\]\./,
+  });
+  watcher.on('all', (event, path) => {
     console.log('chokidar finds:', event, path);
   });
 
