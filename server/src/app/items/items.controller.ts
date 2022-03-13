@@ -68,6 +68,11 @@ export class ItemsController {
     return this.itemsService.remove(Number(id));
   }
 
+  @Get('/test')
+  test() {
+    return this.itemsService.test();
+  }
+
   @Post('/reset')
   reset() {
     return this.itemsService.reset();

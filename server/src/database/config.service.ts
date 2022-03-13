@@ -43,7 +43,7 @@ class ConfigService {
       host: this.getValue('POSTGRES_HOST'),
       port: parseInt(this.getValue('POSTGRES_PORT')),
       username: this.getValue('POSTGRES_USER'),
-      password: this.getValue('POSTGRES_PASSWORD'),
+      password: this.getValue('POSTGRES_PW'),
       database: this.getValue('POSTGRES_DB'),
       entities: [__dirname + '/../**/*.entity.ts'],
       migrationsTableName: 'migration',
@@ -60,7 +60,7 @@ const configService = new ConfigService(process.env).ensureValues([
   'POSTGRES_HOST',
   'POSTGRES_PORT',
   'POSTGRES_USER',
-  'POSTGRES_PASSWORD',
+  'POSTGRES_PW',
   'POSTGRES_DB',
 ]);
 

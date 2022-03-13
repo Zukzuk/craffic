@@ -82,6 +82,10 @@ export class ItemsService {
     throw new NotFoundException(`Item with id: ${id} could not be found`);
   }
 
+  async test() {
+    return 'test';
+  }
+
   async reset() {
     try {
       this.idIndex = 0;

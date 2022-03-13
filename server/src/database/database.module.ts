@@ -18,11 +18,7 @@ import { ItemEntity } from '../app/items/entities/items.entity';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PW'),
         database: configService.get('POSTGRES_DB'),
-        entities: [
-          //__dirname + '/**/*.entity.ts',
-          ItemEntity,
-          UserEntity,
-        ],
+        entities: [__dirname + '/../**/*.entity.ts', ItemEntity, UserEntity],
         synchronize: configService.get('TYPEORM_SYNC'),
       }),
     }),
