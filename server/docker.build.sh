@@ -1,5 +1,6 @@
 #!/bin/bash
 # https://blog.container-solutions.com/tagging-docker-images-the-right-way
+# https://blog.container-solutions.com/docker-latest-confusion
 
 set -o allexport
 source .docker.env

@@ -1,7 +1,7 @@
 {
   "name": "craffic-nestjs",
   "version": "0.0.1",
-  "description": "A modern Graphic-Novel Library",
+  "description": "A server and API for a modern Graphic-Novel Library",
   "author": "Dave Timmerman",
   "private": true,
   "license": "UNLICENSED",

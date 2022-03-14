@@ -26,3 +26,14 @@ fi
 # Begin script in case all parameters are correct
 echo "$parameterA"
 echo "$parameterB"
+
+# https://docs.docker.com/docker-hub/builds/
+
+# git status
+# git pull
+# git add .
+# git commit -m "feat()"
+# npm version patch|minor|major
+# npm run build:nestjs
+# docker login -u zukzuk
+# docker push zukzuk/craffic-nestjs

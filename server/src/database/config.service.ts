@@ -43,7 +43,7 @@ class ConfigService {
       host: this.getValue('POSTGRES_HOST'),
       port: parseInt(this.getValue('POSTGRES_PORT')),
       username: this.getValue('POSTGRES_USER'),
-      password: this.getValue('POSTGRES_PW'),
+      password: this.getValue('POSTGRES_PASSWORD'),
       database: this.getValue('POSTGRES_DB'),
       entities: [__dirname + '/../**/*.entity.ts'],
       migrationsTableName: 'migration',

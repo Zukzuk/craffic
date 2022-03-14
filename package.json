@@ -22,9 +22,8 @@
     "scripts": {
         "dev": "docker-compose -f docker-compose.dev.yml up --build -V",
         "build:nestjs": "(cd server; bash docker.build.sh)",
-        "precommit": "concurrently \"cd ./server && npm install && npm run lint && npm run test:cov && exit\" \"cd web && npm install && npm run lint && CI=true npm run test:cov\"",
-        "test:server": "cd ./server && npm run lint && npm run test:cov && exit",
-        "test:web": "cd ./web && npm run lint && CI=true npm run test:cov",
-        "prepare": "husky install"
+        "precommit": "concurrently \"npm run test:server\" \"npm run test:web\"",
+        "test:server": "cd ./server && npm install && npm run lint && npm run test:cov && exit",
+        "test:web": "cd web && npm install && npm run lint && CI=true npm run test:cov"
     }
 }
