@@ -13,7 +13,8 @@ A progressive [NodeJS](https://nodejs.org) framework for building efficient and 
 
 [Goto server project README](./server/README.md)
 
-## DATABASE / TypeORM
-### Getting Started with PostgreSQl
+## DATABASE / TYPEORM
+### Getting Started with PostgreSQL
 NestJS, TypeORM and PostgreSQL — full example development and project setup working with database migrations.
+
 [Medium](https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f)

@@ -1,10 +1,16 @@
 {
-  "name": "server",
+  "name": "craffic-nestjs",
   "version": "0.0.1",
   "description": "A modern Graphic-Novel Library",
-  "author": "",
+  "author": "Dave Timmerman",
   "private": true,
   "license": "UNLICENSED",
+  "homepage": "https://craffic.com",
+  "repositoryurl": "https://github.com/Zukzuk/craffic.git",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Zukzuk/craffic.git"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

@@ -33,7 +33,7 @@ class ConfigService {
   }
 
   public isProduction() {
-    const mode = this.getValue('MODE', false);
+    const mode = this.getValue('POSTGRES_MODE', false);
     return mode != 'DEV';
   }
 
@@ -60,7 +60,7 @@ const configService = new ConfigService(process.env).ensureValues([
   'POSTGRES_HOST',
   'POSTGRES_PORT',
   'POSTGRES_USER',
-  'POSTGRES_PW',
+  'POSTGRES_PASSWORD',
   'POSTGRES_DB',
 ]);
 

@@ -2,6 +2,29 @@ version: "3"
 
 services:
 
+  # # The craffic reactjs_web service is responsible for running our webclient.
+  # reactjs_web:
+  #   container_name: reactjs_web
+  #   build:
+  #     # Tell Docker which files should be sent to the Docker daemon
+  #     context: ./web
+  #     # Tell compose to only run the 'development' stage of the docker file
+  #     target: development
+  #   volumes:
+  #   - ./web:/usr/src/app
+  #   - /usr/src/app/node_modules
+  #   ports:
+  #   - ${REACTJS_PORT}:${REACTJS_PORT}
+  #   # This runs after development stage is done
+  #   command: react-scripts start
+  #   env_file:
+  #   - ./web/.docker.env
+  #   networks:
+  #   - postgres
+  #   depends_on:
+  #   - redis
+  #   - postgres
+
   # The craffic nestjs_server service is responsible for running our server and API.
   nestjs_server:
     container_name: nestjs_server
@@ -20,7 +43,7 @@ services:
     # This runs after development stage is done
     command: npm run start:dev
     env_file:
-    - ./server/.docker.nestjs.env
+    - ./server/.docker.env
     networks:
     - postgres
     depends_on:

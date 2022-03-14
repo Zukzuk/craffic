@@ -2,9 +2,14 @@
     "name": "Craffic",
     "version": "0.1.0",
     "description": "A modern Graphic-Novel Library",
-    "author": "",
+    "author": "Dave Timmerman",
     "private": true,
     "license": "UNLICENSED",
+    "homepage": "https://craffic.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Zukzuk/craffic.git"
+    },
     "engines": {
         "npm": ">=8.0.0",
         "node": ">=16.0.0"
@@ -15,8 +20,8 @@
         "lint-staged": "^12.3.4"
     },
     "scripts": {
-        "dev": "docker-compose up --build -V",
-        "build:nestjs": "docker build --no-cache --progress=plain --tag craffic-nestjs ./server",
+        "dev": "docker-compose -f docker-compose.dev.yml up --build -V",
+        "build:nestjs": "(cd server; bash docker.build.sh)",
         "precommit": "concurrently \"cd ./server && npm install && npm run lint && npm run test:cov && exit\" \"cd web && npm install && npm run lint && CI=true npm run test:cov\"",
         "test:server": "cd ./server && npm run lint && npm run test:cov && exit",
         "test:web": "cd ./web && npm run lint && CI=true npm run test:cov",
