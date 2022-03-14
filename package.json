@@ -17,7 +17,7 @@
     "scripts": {
         "dev": "docker-compose up --build -V",
         "build:nestjs": "docker build --no-cache --progress=plain --tag craffic-nestjs ./server",
-        "precommit": "concurrently \"cd ./server && npm run lint && npm run test:cov && exit\" \"cd web && npm run lint && CI=true npm run test:cov\"",
+        "precommit": "concurrently \"cd ./server && npm install && npm run lint && npm run test:cov && exit\" \"cd web && npm install && npm run lint && CI=true npm run test:cov\"",
         "test:server": "cd ./server && npm run lint && npm run test:cov && exit",
         "test:web": "cd ./web && npm run lint && CI=true npm run test:cov",
         "prepare": "husky install"
