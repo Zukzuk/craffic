@@ -34,6 +34,8 @@ echo "$parameterB"
 # git add .
 # git commit -m "feat()"
 # npm version patch|minor|major
+# git push origin main --follow-tags
 # npm run build:nestjs
 # docker login -u zukzuk
-# docker push zukzuk/craffic-nestjs
+# docker push zukzuk/craffic-nestjs --all-tags
+# docker logout

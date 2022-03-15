@@ -1,4 +1,7 @@
 # Check for unexpected alpine behavour: https://wiki.alpinelinux.org/wiki/Docker
+# https://snyk.io/blog/10-docker-image-security-best-practices/
+# https://github.com/garethr/multi-stage-build-example
+# https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
 
 ### DEVELOPMENT ###
 FROM node:16.14-alpine As development
@@ -19,15 +22,15 @@ RUN npm run build --loglevel verbose && npm prune --production
 
 ### PRODUCTION ###
 FROM node:16.14-alpine as production
+RUN apk add dumb-init
 WORKDIR /usr/src/app
+# bake ENV on BUILD
 ARG NODE_ENV=production
-# allow for environment override
+# allow for environment override on RUN
 ENV NODE_ENV=${NODE_ENV}
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
+COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules
 RUN ls
-USER node
 EXPOSE ${NESTJS_PORT}
-ENTRYPOINT ["node"]
-CMD ["dist/main"]
+USER node
+CMD ["dumb-init", "node", "dist/main"]

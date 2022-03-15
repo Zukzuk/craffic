@@ -68,7 +68,7 @@ services:
     ports:
     - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-    # Make sure the db persists by using a named volume. It will persist until manual removal.
+    # Make sure the db persists by using a named volume.
     - /data/postgres:/data/postgres
     restart: always
 
