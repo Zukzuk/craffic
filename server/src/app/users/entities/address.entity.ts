@@ -1,10 +1,10 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'adressess' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  public id: number;
 
   @Column({ unique: true, type: 'varchar', length: 300 })
   public email: string;

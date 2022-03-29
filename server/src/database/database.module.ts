@@ -19,6 +19,7 @@ import { ItemEntity } from '../app/items/entities/items.entity';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [__dirname + '/../**/*.entity.ts', ItemEntity, UserEntity],
+        // See also migration strategy: https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
         synchronize: configService.get('POSTGRES_TYPEORM_SYNC'),
       }),
     }),

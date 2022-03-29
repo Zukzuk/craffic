@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import PostgresErrorCode from '../../database/enums/postgresErrorCode.enum';
 import { TokenPayload } from './auth.interface';
-import { BaseUserDto } from '../users/dtos/users.dto';
+import { RegistrationDto } from './dtos/auth.dto';
 
 /*
 Authentication means checking the identity of user. It provides an answer to a question: who is the user?
@@ -19,14 +19,13 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async register(registrationData: BaseUserDto) {
+  public async register(registrationData: RegistrationDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
       });
-      createdUser.password = undefined;
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
@@ -52,8 +51,6 @@ export class AuthService {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      // TODO: not the cleanest way to remove the password from the response
-      user.password = undefined;
       return user;
     } catch (error) {
       throw new HttpException(
@@ -79,7 +76,7 @@ export class AuthService {
     }
   }
 
-  public getCookieWithJwtToken(userId: number) {
+  public getCookieWithJwtToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
@@ -87,7 +84,7 @@ export class AuthService {
     )}`;
   }
 
-  public getCookieForLogOut() {
+  public getCookieClearedForLogOut() {
     return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
   }
 }

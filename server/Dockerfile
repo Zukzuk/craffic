@@ -1,6 +1,6 @@
-# Check for unexpected alpine behavour: https://wiki.alpinelinux.org/wiki/Docker
-# https://snyk.io/blog/10-docker-image-security-best-practices/
+# https://vsupalov.com/docker-arg-env-variable-guide/
 # https://github.com/garethr/multi-stage-build-example
+# https://snyk.io/blog/10-docker-image-security-best-practices/
 # https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/
 
 ### DEVELOPMENT ###

@@ -7,6 +7,8 @@ import { ItemsModule } from './app/items/items.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './app/users/users.module';
 import { AuthModule } from './app/auth/auth.module';
+import { DirTreeService } from './app/providers/dirtree.service';
+import { ChokidarService } from './app/providers/chokidar.service';
 
 @Module({
   imports: [
@@ -25,13 +27,12 @@ import { AuthModule } from './app/auth/auth.module';
         NESTJS_PORT: Joi.number(),
       }),
     }),
-    // See also migration strategy: https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
     DatabaseModule,
     AuthModule,
     UsersModule,
     ItemsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [DirTreeService, ChokidarService],
 })
 export class AppModule {}

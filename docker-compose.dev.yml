@@ -26,15 +26,17 @@ services:
   #   - postgres
 
   # The craffic nestjs_server service is responsible for running our server and API.
-  nestjs_server:
-    container_name: nestjs_server
+  nestjs-server:
+    container_name: nestjs-server
     build:
       # Tell Docker which files should be sent to the Docker daemon
-      context: ./server
-      # Tell compose to only run the 'development' stage of the docker file
+      context: ./server/
+      # Tell compose to only build the 'development' stage of the docker file
       target: development
     volumes:
+    # Make development dir available in container
     - ./server:/usr/src/app
+    # Make node_modules available in container
     - /usr/src/app/node_modules
     ports:
     - ${NESTJS_PORT}:${NESTJS_PORT}
@@ -68,8 +70,8 @@ services:
     ports:
     - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-    # Make sure the db persists by using a named volume.
-    - /data/postgres:/data/postgres
+    # Host path /data/pgdata is mounted on PGDATA dir in the container.
+    - /data/pgadmin:${PGDATA}
     restart: always
 
   pgadmin:
@@ -80,7 +82,8 @@ services:
     ports:
     - ${PGADMIN_PORT}:80
     volumes:
-    - /data/pgadmin:/root/.pgadmin
+    # Host path /data/pgadmin is mounted on PGADMIN_DATA dir in the container.
+    - /data/postgres:${PGADMIN_DATA}
     env_file:
     - .env
     networks:
@@ -89,6 +92,3 @@ services:
 networks:
   postgres:
     driver: bridge
-
-volumes:
-  pgdata:

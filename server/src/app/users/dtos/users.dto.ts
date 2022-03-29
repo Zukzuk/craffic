@@ -1,4 +1,9 @@
-import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  PartialType,
+  PickType,
+} from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsEmail, Matches } from 'class-validator';
 
 export class UserDto {
@@ -59,3 +64,5 @@ export class BaseUserDto extends PickType(UserDto, [
   'password',
   'phoneNumber',
 ] as const) {}
+
+export class PartialUserDto extends PartialType(BaseUserDto) {}

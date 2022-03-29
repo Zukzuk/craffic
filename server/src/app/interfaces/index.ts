@@ -42,9 +42,15 @@ type TFormat = 'cbr' | 'cbz' | 'epub';
 export interface IComicFileData {
   type: TBookType;
   file: string;
+  bundle: string;
   fileLocation: string;
   format: TFormat;
   fileSizeInBytes: number;
   coverPage: string;
   numPages: number;
+}
+
+export interface IComicFileExtractError {
+  bundle: string;
+  error: unknown;
 }

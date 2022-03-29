@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseItemDto, PartialItemDto } from './dtos/items.dto';
 import { IItem } from '../interfaces';
 import { ExtractorService } from '../providers/extractor.service';
+import {
+  DefaultNotFoundException,
+  CollectionNotFoundException,
+} from '../exceptions/notFound.exception';
 
 @Injectable()
 export class ItemsService {
@@ -27,7 +31,7 @@ export class ItemsService {
 
   async findAll() {
     if (this.items !== undefined) return await this.items;
-    throw new NotFoundException(`Collection could not be found`);
+    throw new CollectionNotFoundException();
   }
 
   async findOne(id: number) {
@@ -37,7 +41,7 @@ export class ItemsService {
     }, false);
 
     if (result) return result;
-    throw new NotFoundException(`Item with id: ${id} could not be found`);
+    throw new DefaultNotFoundException(id);
   }
 
   async update(id: number, dto: BaseItemDto) {
@@ -50,7 +54,7 @@ export class ItemsService {
     }
 
     if (updatedItem) return updatedItem;
-    throw new NotFoundException(`Item with id: ${id} could not be found`);
+    throw new DefaultNotFoundException(id);
   }
 
   async patch(id: number, patch: PartialItemDto) {
@@ -66,7 +70,7 @@ export class ItemsService {
     });
 
     if (patchedItem) return patchedItem;
-    throw new NotFoundException(`Item with id: ${id} could not be found`);
+    throw new DefaultNotFoundException(id);
   }
 
   async remove(id: number) {
@@ -79,7 +83,7 @@ export class ItemsService {
       this.items.splice(index, 1);
       return `Succesfully removed Item with id: ${id}`;
     }
-    throw new NotFoundException(`Item with id: ${id} could not be found`);
+    throw new DefaultNotFoundException(id);
   }
 
   async test() {

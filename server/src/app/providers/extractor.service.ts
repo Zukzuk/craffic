@@ -1,25 +1,25 @@
 import * as StreamZip from 'node-stream-zip';
 import * as fs from 'fs';
 import * as unrar from 'node-unrar-js';
-import { IComicFileData } from '../interfaces';
+import { IComicFileData, IComicFileExtractError } from '../interfaces';
 
 export class ExtractorService {
   public async read(dir: string, files: string[]): Promise<string> {
-    const queue: Promise<IComicFileData>[] = [];
+    const queue: Promise<IComicFileData | IComicFileExtractError>[] = [];
 
     files.forEach((fileName) => {
-      const file = dir + '/' + fileName; // this can now run into double /
+      const bundle = dir + '/' + fileName; // this can now run into double /
       const fileParts = fileName.split('.');
       const extension = fileParts[fileParts.length - 1];
-      const stats = fs.statSync(file);
+      const stats = fs.statSync(bundle);
       const fileSizeInBytes: number = stats.size;
 
       switch (extension) {
         case 'cbz':
-          queue.push(this.extractZip(file, fileSizeInBytes));
+          queue.push(this.extractZip(bundle, fileSizeInBytes));
           break;
         case 'cbr':
-          queue.push(this.extractRar(file, fileSizeInBytes));
+          queue.push(this.extractRar(bundle, fileSizeInBytes));
           break;
         default:
           throw new Error(`Unrecognized file format ${extension}`);
@@ -31,13 +31,13 @@ export class ExtractorService {
   }
 
   private async extractZip(
-    file: string,
+    bundle: string,
     fileSizeInBytes: number,
-  ): Promise<IComicFileData> {
+  ): Promise<IComicFileData | IComicFileExtractError> {
     let zip;
     try {
       // read the archive
-      zip = new StreamZip.async({ file });
+      zip = new StreamZip.async({ file: bundle });
       const entries = await zip.entries();
       const list: Array<StreamZip.ZipEntry> = Object.values(entries);
 
@@ -59,6 +59,7 @@ export class ExtractorService {
       // return payload
       return {
         type: 'comic',
+        bundle,
         file: firstEntry.name,
         format: 'cbz',
         fileSizeInBytes,
@@ -70,18 +71,21 @@ export class ExtractorService {
       // close the file to prevent memory leak
       if (zip) await zip.close();
 
-      // throw error
-      throw new Error(err);
+      // return error
+      return {
+        bundle,
+        error: err,
+      };
     }
   }
 
   private async extractRar(
-    file: string,
+    bundle: string,
     fileSizeInBytes: number,
-  ): Promise<IComicFileData> {
+  ): Promise<IComicFileData | IComicFileExtractError> {
     try {
       // read the archive
-      const archive = await fs.promises.readFile(file);
+      const archive = await fs.promises.readFile(bundle);
       const data = Uint8Array.from(archive).buffer;
       const extractor = await unrar.createExtractorFromData({ data });
       const fileList = extractor.getFileList();
@@ -107,6 +111,7 @@ export class ExtractorService {
       // return payload
       return {
         type: 'comic',
+        bundle,
         file: firstEntry.name,
         format: 'cbz',
         fileSizeInBytes,
@@ -115,8 +120,11 @@ export class ExtractorService {
         numPages,
       };
     } catch (err) {
-      // throw error
-      throw new Error(err);
+      // return error
+      return {
+        bundle,
+        error: err,
+      };
     }
   }
 
@@ -135,7 +143,7 @@ export class ExtractorService {
         );
       })
       .sort(function (a, b) {
-        // sort alphabetically and case-insensitive
+        // sort alphabetically and case-insensitively
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
   }

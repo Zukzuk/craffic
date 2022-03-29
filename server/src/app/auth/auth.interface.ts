@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { UserEntity } from '../users/entities/users.entity';
 
 // Using Passport local strategy, the data of the user is attached to the request object.
@@ -7,5 +8,5 @@ export interface RequestWithUser extends Request {
 }
 
 export interface TokenPayload {
-  userId: number;
+  userId: string;
 }

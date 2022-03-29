@@ -1,35 +1,66 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Put,
+  Patch,
+  Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { BaseUserDto } from './dtos/users.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BaseUserDto, PartialUserDto } from './dtos/users.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // @ApiOperation({
+  //   summary: 'Create a new User',
+  // })
+  // @Post()
+  // create(@Body() userData: BaseUserDto) {
+  //   return this.usersService.create(userData);
+  // }
+
   @ApiOperation({
-    summary: 'Create a new User',
+    summary: 'Get the Users collection',
   })
-  @Post()
-  create(@Body() userData: BaseUserDto) {
-    return this.usersService.create(userData);
+  @ApiBearerAuth()
+  @Get()
+  findAll() {
+    return this.usersService.findAll();
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
+  @ApiOperation({
+    summary: 'Get an User by ID',
+  })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.getById(id);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
+  @ApiOperation({
+    summary: 'Update a User by ID',
+  })
+  @Put(':id')
+  update(@Param('id') id: string, @Body() userData: BaseUserDto) {
+    return this.usersService.updateOrPatch(id, userData);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
+  @ApiOperation({
+    summary: 'Update a part of a User by ID',
+  })
+  @Patch(':id')
+  patch(@Param('id') id: string, @Body() partialUserData: PartialUserDto) {
+    return this.usersService.updateOrPatch(id, partialUserData);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

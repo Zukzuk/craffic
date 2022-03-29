@@ -22,10 +22,13 @@
         "lint-staged": "^12.3.4"
     },
     "scripts": {
-        "dev": "docker-compose -f docker-compose.dev.yml up --build -V",
-        "build:nestjs": "(cd server; bash docker.build.sh)",
-        "precommit": "concurrently \"npm run test:server\" \"npm run test:web\"",
-        "test:server": "cd ./server && npm install && npm run lint && npm run test:cov && exit",
-        "test:web": "cd web && npm install && npm run lint && CI=true npm run test:cov"
+        "up": "docker-compose -f docker-compose.dev.yml up --build",
+        "stop": "docker-compose -f docker-compose.dev.yml stop",
+        "down": "docker-compose -f docker-compose.dev.yml down -v",
+        "build:nestjs": "npm run docker:cleanup && (cd server; bash docker.build.sh)",
+        "connect:psql": "docker exec -it postgres psql -d nestjs -U admin",
+        "precommit": "concurrently \"npm audit --production\" \"npm run test:server\" \"npm run test:web\"",
+        "test:server": "cd ./server && npm install --no-audit && npm run lint && npm run test && npm audit --audit-level=high --production",
+        "test:web": "cd ./web && npm install --no-audit && npm run lint && CI=true npm run test && npm audit --audit-level=high --production"
     }
 }

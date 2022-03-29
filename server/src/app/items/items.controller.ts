@@ -7,10 +7,8 @@ import {
   Patch,
   Param,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/auth.guards';
 import { BaseItemDto, PartialItemDto } from './dtos/items.dto';
 import { ItemsService } from './items.service';
 
@@ -20,16 +18,15 @@ export class ItemsController {
   constructor(private itemsService: ItemsService) {}
 
   @ApiOperation({
-    summary: 'Create a new item',
+    summary: 'Create a new Item',
   })
   @Post()
-  @UseGuards(JwtAuthGuard)
   create(@Body() itemData: BaseItemDto) {
     return this.itemsService.create(itemData);
   }
 
   @ApiOperation({
-    summary: 'Get the item collection',
+    summary: 'Get the Items collection',
   })
   @Get()
   findAll() {
@@ -37,36 +34,38 @@ export class ItemsController {
   }
 
   @ApiOperation({
-    summary: 'Get an item by ID',
+    summary: 'Get an Item by ID',
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.itemsService.findOne(Number(id));
+    return this.itemsService.findOne(+id);
   }
 
   @ApiOperation({
-    summary: 'Update an item by ID',
+    summary: 'Update an Item by ID',
   })
   @Put(':id')
   update(@Param('id') id: string, @Body() itemData: BaseItemDto) {
-    return this.itemsService.update(Number(id), itemData);
+    return this.itemsService.update(+id, itemData);
   }
 
   @ApiOperation({
-    summary: 'Update a part of an item by ID',
+    summary: 'Update a part of an Item by ID',
   })
   @Patch(':id')
   patch(@Param('id') id: string, @Body() partialItemData: PartialItemDto) {
-    return this.itemsService.patch(Number(id), partialItemData);
+    return this.itemsService.patch(+id, partialItemData);
   }
 
   @ApiOperation({
-    summary: 'Remove an item by ID',
+    summary: 'Remove an Item by ID',
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.itemsService.remove(Number(id));
+    return this.itemsService.remove(+id);
   }
+
+  ////
 
   @Get('/test')
   test() {
