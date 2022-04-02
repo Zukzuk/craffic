@@ -22,7 +22,6 @@ async function bootstrap() {
     .setDescription(pkg.description)
     .setVersion(pkg.version)
     .setExternalDoc('Download JSON Specs', 'json')
-    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

@@ -28,7 +28,7 @@
         "build:nestjs": "npm run docker:cleanup && (cd server; bash docker.build.sh)",
         "connect:psql": "docker exec -it postgres psql -d nestjs -U admin",
         "precommit": "concurrently \"npm audit --production\" \"npm run test:server\" \"npm run test:web\"",
-        "test:server": "cd ./server && npm install --no-audit && npm run lint && npm run test && npm audit --audit-level=high --production",
-        "test:web": "cd ./web && npm install --no-audit && npm run lint && CI=true npm run test && npm audit --audit-level=high --production"
+        "test:server": "cd ./server && npm install --no-audit && npm run lint && npm run test && npm audit --audit-level=critical --production",
+        "test:web": "cd ./web && npm install --no-audit && npm run lint && CI=true npm run test && npm audit --audit-level=critical --production"
     }
 }
