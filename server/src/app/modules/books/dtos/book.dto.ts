@@ -5,9 +5,12 @@ import {
   PickType,
 } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
-import { BaseDto } from '../../../../database/dtos/base.dto';
 
-class ItemDto extends BaseDto {
+class BookDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly id: string;
+
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
@@ -29,13 +32,13 @@ class ItemDto extends BaseDto {
   readonly image: string;
 }
 
-export class CreateItemDto extends PickType(ItemDto, [
+export class CreateBookDto extends PickType(BookDto, [
   'author',
   'title',
   'description',
   'image',
 ] as const) {}
 
-export class UpdateItemDto extends CreateItemDto {}
+export class UpdateBookDto extends CreateBookDto {}
 
-export class PatchItemDto extends PartialType(UpdateItemDto) {}
+export class PatchBookDto extends PartialType(UpdateBookDto) {}

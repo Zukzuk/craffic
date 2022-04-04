@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
 import UserClaims from '../../users/claims/user.claim';
 import { JwtAuthGuard } from '../auth.guards';
 import { RequestWithUser } from '../auth.interface';
-import { ClaimsMapper } from './auth.roles';
+import { ClaimsMap } from './auth.roles';
 import Permission from './permission.type';
 
 const PermissionGuard = (
@@ -19,7 +19,7 @@ const PermissionGuard = (
 
       // reduce roles to a list of available claims
       const allClaims = user?.roles.reduce<Permission[]>((acc, role) => {
-        const claims = acc.concat(ClaimsMapper[role]);
+        const claims = acc.concat(ClaimsMap[role]);
         return claims;
       }, []);
 

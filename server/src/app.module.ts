@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
 // modules
-import { ItemsModule } from './app/modules/items/items.module';
+import { BooksModule } from './app/modules/books/books.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './app/modules/users/users.module';
 import { AuthModule } from './app/modules/auth/auth.module';
@@ -30,7 +30,7 @@ import { ChokidarService } from './app/providers/chokidar.service';
     DatabaseModule,
     AuthModule,
     UsersModule,
-    ItemsModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [DirTreeService, ChokidarService],

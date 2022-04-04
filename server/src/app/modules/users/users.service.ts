@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -18,9 +18,10 @@ export class UsersService {
 
   async create(userData: CreateUserDto) {
     const newUser = await this.usersRepository.create(userData);
-    await this.usersRepository.save(newUser);
+    const savedUser = await this.usersRepository.save(newUser);
 
-    return newUser;
+    if (savedUser) return savedUser;
+    throw new InternalServerErrorException();
   }
 
   async findAll() {
@@ -51,15 +52,19 @@ export class UsersService {
     userData: UpdateUserDto | PatchUserDto,
     requesterId: string,
   ) {
-    // Saves a given entity or array of entities. If the entity already exists in the database, it is updated.
-    // If the entity does not exist in the database, it is inserted. It saves all given entities in a single transaction.
-    const user = await this.usersRepository.save({
+    const modifiedUser = await this.usersRepository.create({
       id,
       ...userData,
       lastChangedBy: requesterId,
     });
 
-    if (user) return user;
+    /*
+    Saves a given entity or array of entities. If the entity already exists in the database, it is updated.
+    If the entity does not exist in the database, it is inserted. It saves all given entities in a single transaction.
+    */
+    const savedUser = await this.usersRepository.save(modifiedUser);
+
+    if (savedUser) return savedUser;
     throw new DefaultNotFoundException(id, 'User');
   }
 

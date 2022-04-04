@@ -5,15 +5,18 @@ import {
   PickType,
 } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
-import { BaseDto } from '../../../../database/dtos/base.dto';
 
-class UserDto extends BaseDto {
+class UserDto {
+  @IsNotEmpty()
+  @IsString()
+  readonly id: string;
+
   @IsNotEmpty()
   @IsString()
   @IsEmail()
   @ApiProperty({
     maxLength: 300,
-    default: 'dave.timmerman@gmail.com',
+    default: 'test.user@domain.com',
   })
   readonly email: string;
 
@@ -21,7 +24,7 @@ class UserDto extends BaseDto {
   @IsString()
   @ApiProperty({
     minLength: 12,
-    default: 'Whoop132!',
+    default: 'testpassword',
   })
   readonly password: string;
 

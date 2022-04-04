@@ -1,4 +1,4 @@
-import ItemClaims from '../../items/claims/item.claim';
+import ItemClaims from '../../books/claims/book.claim';
 import UserClaims from '../../users/claims/user.claim';
 
 const Permission = {

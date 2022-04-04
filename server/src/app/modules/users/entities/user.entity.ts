@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AddressEntity } from './address.entity';
-import { ROLES } from 'src/app/modules/auth/abac/auth.roles';
+import { ROLES } from '../../auth/abac/auth.roles';
 
 @Entity({ name: 'user' })
 export class UserEntity extends MetadataEntity {

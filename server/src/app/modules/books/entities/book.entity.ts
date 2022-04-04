@@ -1,8 +1,8 @@
 import { MetadataEntity } from '../../../../database/entities/metadata.entity';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'item' })
-export class ItemEntity extends MetadataEntity {
+@Entity({ name: 'book' })
+export class BookEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

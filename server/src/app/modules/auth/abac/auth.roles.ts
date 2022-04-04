@@ -5,7 +5,7 @@ export enum ROLES {
   SERVER_ADMIN = 'SERVER_ADMIN',
 }
 
-export const ClaimsMapper = {
+export const ClaimsMap = {
   [ROLES.WEBCLIENT_USER]: [UserClaims.CanReadUser, UserClaims.CanUpdateUser],
   [ROLES.SERVER_ADMIN]: [...Object.values(UserClaims)],
 };

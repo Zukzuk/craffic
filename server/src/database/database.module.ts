@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
-// entities
 import { UserEntity } from '../app/modules/users/entities/user.entity';
-import { ItemEntity } from '../app/modules/items/entities/item.entity';
-import { AddressEntity } from 'src/app/modules/users/entities/address.entity';
+import { BookEntity } from '../app/modules/books/entities/book.entity';
+import { AddressEntity } from '../app/modules/users/entities/address.entity';
 
 @Module({
   imports: [
@@ -21,7 +19,7 @@ import { AddressEntity } from 'src/app/modules/users/entities/address.entity';
         database: configService.get('POSTGRES_DB'),
         entities: [
           // __dirname + '/../../**/*.entity.ts',
-          ItemEntity,
+          BookEntity,
           UserEntity,
           AddressEntity,
         ],
