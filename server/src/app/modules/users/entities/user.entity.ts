@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import { MetadataEntity } from '../../../../database/entities/metadata.entity';
 import {
   Column,
@@ -13,7 +12,7 @@ import { ROLES } from '../../auth/abac/auth.roles';
 @Entity({ name: 'user' })
 export class UserEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  public id: string;
 
   @Column({ unique: true, type: 'varchar', length: 300 })
   public email: string;
@@ -28,7 +27,6 @@ export class UserEntity extends MetadataEntity {
   public lastName?: string;
 
   @Column({ type: 'varchar' })
-  @Exclude()
   public password: string;
 
   @Column({
@@ -37,7 +35,6 @@ export class UserEntity extends MetadataEntity {
     array: true,
     default: [ROLES.WEBCLIENT_USER],
   })
-  @Exclude()
   public roles: ROLES[];
 
   @OneToOne(() => AddressEntity)

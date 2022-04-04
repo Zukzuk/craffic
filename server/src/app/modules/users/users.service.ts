@@ -1,8 +1,14 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import { CreateUserDto, UpdateUserDto, PatchUserDto } from './dtos/user.dto';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  PatchUserDto,
+  ResponseUserDto,
+  GetByEmailUserDto,
+} from './dtos/user.dto';
 import {
   CollectionNotFoundException,
   CustomNotFoundException,
@@ -16,29 +22,29 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(userData: CreateUserDto) {
+  async create(userData: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = await this.usersRepository.create(userData);
     const savedUser = await this.usersRepository.save(newUser);
 
-    if (savedUser) return savedUser;
+    if (savedUser) return new ResponseUserDto(savedUser);
     throw new InternalServerErrorException();
   }
 
-  async findAll() {
+  async findAll(): Promise<ResponseUserDto[]> {
     const users = await this.usersRepository.find();
 
-    if (users) return users;
+    if (users) return users.map((user) => new ResponseUserDto(user));
     throw new CollectionNotFoundException();
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<ResponseUserDto> {
     const user = await this.usersRepository.findOne({ id });
 
-    if (user) return user;
+    if (user) return new ResponseUserDto(user);
     throw new DefaultNotFoundException(id, 'User');
   }
 
-  async getByEmail(email: string) {
+  async getByEmail(email: string): Promise<GetByEmailUserDto> {
     const user = await this.usersRepository.findOne({ email });
 
     if (user) return user;
@@ -51,7 +57,7 @@ export class UsersService {
     id: string,
     userData: UpdateUserDto | PatchUserDto,
     requesterId: string,
-  ) {
+  ): Promise<ResponseUserDto> {
     const modifiedUser = await this.usersRepository.create({
       id,
       ...userData,
@@ -64,11 +70,11 @@ export class UsersService {
     */
     const savedUser = await this.usersRepository.save(modifiedUser);
 
-    if (savedUser) return savedUser;
+    if (savedUser) return new ResponseUserDto(savedUser);
     throw new DefaultNotFoundException(id, 'User');
   }
 
-  async remove(id: string) {
-    return await this.usersRepository.delete({ id });
+  async delete(id: string): Promise<DeleteResult> {
+    return this.usersRepository.delete({ id });
   }
 }

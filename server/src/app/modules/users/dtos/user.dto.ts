@@ -4,7 +4,9 @@ import {
   PartialType,
   PickType,
 } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { ResponseDto } from 'src/app/utils';
 
 class UserDto {
   @IsNotEmpty()
@@ -64,3 +66,23 @@ export class UpdateUserDto extends PickType(CreateUserDto, [
 ] as const) {}
 
 export class PatchUserDto extends PartialType(UpdateUserDto) {}
+
+export class GetByEmailUserDto extends CreateUserDto {}
+
+export class ResponseUserDto extends ResponseDto {
+  @Expose()
+  readonly id: string;
+  @Expose()
+  readonly email: string;
+  @Expose()
+  readonly name: string;
+  @Expose()
+  readonly lastName?: string;
+  @Expose()
+  readonly userName?: string;
+
+  constructor(object) {
+    super();
+    Object.assign(this, object);
+  }
+}

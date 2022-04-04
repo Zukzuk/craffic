@@ -4,7 +4,10 @@ import {
   PartialType,
   PickType,
 } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { ResponseDto } from 'src/app/utils';
+import { BookEntity } from '../entities/book.entity';
 
 class BookDto {
   @IsNotEmpty()
@@ -42,3 +45,21 @@ export class CreateBookDto extends PickType(BookDto, [
 export class UpdateBookDto extends CreateBookDto {}
 
 export class PatchBookDto extends PartialType(UpdateBookDto) {}
+
+export class ResponseBookDto extends ResponseDto {
+  @Expose()
+  readonly id: string;
+  @Expose()
+  readonly author: string;
+  @Expose()
+  readonly title: string;
+  @Expose()
+  readonly description?: string;
+  @Expose()
+  readonly image: string;
+
+  constructor(entity: BookEntity) {
+    super();
+    Object.assign(this, entity);
+  }
+}

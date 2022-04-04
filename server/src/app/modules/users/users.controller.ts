@@ -13,11 +13,17 @@ import {
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto, PatchUserDto } from './dtos/user.dto';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  PatchUserDto,
+  ResponseUserDto,
+} from './dtos/user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RequestWithUser } from '../auth/auth.interface';
 import UserClaims from './claims/user.claim';
 import PermissionGuard from '../auth/abac/permission.guard';
+import { DeleteResult } from 'typeorm';
 
 @ApiTags('Users')
 @Controller('users')
@@ -35,7 +41,7 @@ export class UsersController {
   })
   @Post()
   @UseGuards(PermissionGuard(UserClaims.CanCreateUser))
-  create(@Body() userData: CreateUserDto) {
+  async create(@Body() userData: CreateUserDto): Promise<ResponseUserDto> {
     return this.usersService.create(userData);
   }
 
@@ -44,7 +50,7 @@ export class UsersController {
   })
   @Get()
   @UseGuards(PermissionGuard(UserClaims.CanReadAllUsers))
-  findAll() {
+  async findAll(): Promise<ResponseUserDto[]> {
     return this.usersService.findAll();
   }
 
@@ -53,7 +59,7 @@ export class UsersController {
   })
   @Get(':id')
   @UseGuards(PermissionGuard(UserClaims.CanReadUser))
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<ResponseUserDto> {
     return this.usersService.getById(id);
   }
 
@@ -62,11 +68,11 @@ export class UsersController {
   })
   @Put(':id')
   @UseGuards(PermissionGuard(UserClaims.CanUpdateUser))
-  update(
+  async update(
     @Param('id') id: string,
     @Body() userData: UpdateUserDto,
     @Req() request: RequestWithUser,
-  ) {
+  ): Promise<ResponseUserDto> {
     const {
       user: { id: requesterId },
     } = request;
@@ -78,11 +84,11 @@ export class UsersController {
   })
   @Patch(':id')
   @UseGuards(PermissionGuard(UserClaims.CanUpdateUser))
-  patch(
+  async patch(
     @Param('id') id: string,
     @Body() partialUserData: PatchUserDto,
     @Req() request: RequestWithUser,
-  ) {
+  ): Promise<ResponseUserDto> {
     const {
       user: { id: requesterId },
     } = request;
@@ -94,7 +100,7 @@ export class UsersController {
   })
   @Delete(':id')
   @UseGuards(PermissionGuard(UserClaims.CanDeleteUser))
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  async remove(@Param('id') id: string): Promise<DeleteResult> {
+    return this.usersService.delete(id);
   }
 }

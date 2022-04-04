@@ -3,11 +3,11 @@ import { Strategy as JwtPassportStrategy, ExtractJwt } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserEntity } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 import { Request } from 'express';
 import { TokenPayload } from './auth.interface';
+import { ResponseUserDto } from '../users/dtos/user.dto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(LocalPassportStrategy) {
@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(LocalPassportStrategy) {
       usernameField: 'email',
     });
   }
-  async validate(email: string, password: string): Promise<UserEntity> {
+  async validate(email: string, password: string): Promise<ResponseUserDto> {
     return this.authService.getAuthenticatedUser(email, password);
   }
 }

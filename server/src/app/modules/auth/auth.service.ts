@@ -9,13 +9,14 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import PostgresErrorCode from '../../../database/enums/postgresErrorCode.enum';
 import { TokenPayload } from './auth.interface';
-import { CreateUserDto } from '../users/dtos/user.dto';
+import { CreateUserDto, ResponseUserDto } from '../users/dtos/user.dto';
+import { UserEntity } from '../users/entities/user.entity';
 
 /*
-Authentication means checking the identity of user. 
-It provides an answer to a question: who is the user?
-Authorization is about access to resources. 
-It answers the question: is user authorized to perform this operation?
+Authentication means checking the identity of user. It provides an 
+answer to a question: who is the user?
+Authorization is about access to resources. It answers the question: 
+is user authorized to perform this operation?
 */
 @Injectable()
 export class AuthService {
@@ -25,20 +26,20 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async register(registrationData: CreateUserDto) {
+  public async register(
+    registrationData: CreateUserDto,
+  ): Promise<ResponseUserDto> {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
-      const createdUser = await this.usersService.create({
+      return this.usersService.create({
         ...registrationData,
         password: hashedPassword,
       });
-      return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         /*
-        Since in the above service we state explicitly that a user with this email already exists, 
-        we should implement rate-limiting preventing attackers from brute-forcing our API in order 
-        to get a list of registered emails
+        We should implement rate-limiting preventing attackers from brute-forcing 
+        our API in order to get a list of registered emails
         */
         throw new BadRequestException();
       }
@@ -46,11 +47,14 @@ export class AuthService {
     }
   }
 
-  public async getAuthenticatedUser(email: string, plainTextPassword: string) {
+  public async getAuthenticatedUser(
+    email: string,
+    plainTextPassword: string,
+  ): Promise<ResponseUserDto> {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      return user;
+      return new ResponseUserDto(user);
     } catch (error) {
       throw new BadRequestException();
     }
@@ -59,7 +63,7 @@ export class AuthService {
   private async verifyPassword(
     plainTextPassword: string,
     hashedPassword: string,
-  ) {
+  ): Promise<void> {
     const isPasswordMatching = await bcrypt.compare(
       plainTextPassword,
       hashedPassword,
@@ -69,7 +73,7 @@ export class AuthService {
     }
   }
 
-  public getCookieWithJwtToken(userId: string) {
+  public getCookieWithJwtToken(userId: string): string {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
@@ -77,7 +81,7 @@ export class AuthService {
     )}`;
   }
 
-  public getCookieClearedForLogOut() {
+  public getCookieClearedForLogOut(): string {
     return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
   }
 }

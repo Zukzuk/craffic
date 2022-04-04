@@ -15,9 +15,15 @@ import {
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import PermissionGuard from '../auth/abac/permission.guard';
 import BookClaims from './claims/book.claim';
-import { CreateBookDto, UpdateBookDto, PatchBookDto } from './dtos/book.dto';
+import {
+  CreateBookDto,
+  UpdateBookDto,
+  PatchBookDto,
+  ResponseBookDto,
+} from './dtos/book.dto';
 import { BooksService } from './books.service';
 import { RequestWithUser } from '../auth/auth.interface';
+import { DeleteResult } from 'typeorm';
 
 @ApiTags('Books')
 @Controller('books')
@@ -30,7 +36,7 @@ export class BooksController {
   })
   @Post()
   @UseGuards(PermissionGuard(BookClaims.CanCreateBook))
-  create(@Body() bookData: CreateBookDto) {
+  async create(@Body() bookData: CreateBookDto): Promise<ResponseBookDto> {
     return this.booksService.create(bookData);
   }
 
@@ -39,7 +45,7 @@ export class BooksController {
   })
   @Get()
   @UseGuards(PermissionGuard(BookClaims.CanReadAllBooks))
-  findAll() {
+  async findAll(): Promise<ResponseBookDto[]> {
     return this.booksService.findAll();
   }
 
@@ -48,7 +54,7 @@ export class BooksController {
   })
   @Get(':id')
   @UseGuards(PermissionGuard(BookClaims.CanReadBook))
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<ResponseBookDto> {
     return this.booksService.findOne(id);
   }
 
@@ -57,11 +63,11 @@ export class BooksController {
   })
   @Put(':id')
   @UseGuards(PermissionGuard(BookClaims.CanUpdateBook))
-  update(
+  async update(
     @Param('id') id: string,
     @Body() bookData: UpdateBookDto,
     @Req() request: RequestWithUser,
-  ) {
+  ): Promise<ResponseBookDto> {
     const {
       user: { id: requesterId },
     } = request;
@@ -73,11 +79,11 @@ export class BooksController {
   })
   @Patch(':id')
   @UseGuards(PermissionGuard(BookClaims.CanUpdateBook))
-  patch(
+  async patch(
     @Param('id') id: string,
     @Body() partialBookData: PatchBookDto,
     @Req() request: RequestWithUser,
-  ) {
+  ): Promise<ResponseBookDto> {
     const {
       user: { id: requesterId },
     } = request;
@@ -89,15 +95,15 @@ export class BooksController {
   })
   @Delete(':id')
   @UseGuards(PermissionGuard(BookClaims.CanDeleteBook))
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(id);
+  async remove(@Param('id') id: string): Promise<DeleteResult> {
+    return this.booksService.delete(id);
   }
 
   @ApiOperation({
     summary: 'Sync Books to database',
   })
   @Post('/sync')
-  sync() {
+  async sync(): Promise<string> {
     return this.booksService.sync();
   }
 }
