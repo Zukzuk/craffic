@@ -1,6 +1,6 @@
 import * as chokidar from 'chokidar';
 
-export class ChokidarService {
+export default class ChokidarService {
   constructor() {
     // chokidar watcher for realtime syncing
     const watcher = chokidar.watch('../library', {

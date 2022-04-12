@@ -3,12 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 
 // modules
-import { BooksModule } from './app/modules/books/books.module';
-import { DatabaseModule } from './database/database.module';
-import { UsersModule } from './app/modules/users/users.module';
-import { AuthModule } from './app/modules/auth/auth.module';
-import { DirTreeService } from './app/providers/dirtree.service';
-import { ChokidarService } from './app/providers/chokidar.service';
+import BooksModule from './app/modules/books/books.module';
+import DatabaseModule from './database.module';
+import UsersModule from './app/modules/users/users.module';
+import AuthModule from './app/modules/auth/auth.module';
+import DirTreeService from './app/providers/dirtree.service';
+import ChokidarService from './app/providers/chokidar.service';
 
 @Module({
   imports: [
@@ -35,4 +35,4 @@ import { ChokidarService } from './app/providers/chokidar.service';
   controllers: [],
   providers: [DirTreeService, ChokidarService],
 })
-export class AppModule {}
+export default class AppModule {}

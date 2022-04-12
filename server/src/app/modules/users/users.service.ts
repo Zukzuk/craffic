@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { UserEntity } from './entities/user.entity';
+import UserEntity from './entities/user.entity';
 import {
   CreateUserDto,
   UpdateUserDto,
@@ -16,7 +16,7 @@ import {
 } from '../../exceptions/notFound.exception';
 
 @Injectable()
-export class UsersService {
+export default class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,

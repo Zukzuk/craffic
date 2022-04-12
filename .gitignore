@@ -24,6 +24,7 @@ docker.env
 
 # compiled output
 /dist
+/persist
 /node_modules
 
 # Logs

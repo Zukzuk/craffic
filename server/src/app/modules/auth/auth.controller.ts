@@ -7,7 +7,7 @@ import {
   Get,
   HttpCode,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import AuthService from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './auth.guards';
 import { LogInDto } from './dtos/auth.dto';
 import { RequestWithUser } from './auth.interface';
@@ -16,7 +16,7 @@ import { CreateUserDto, ResponseUserDto } from '../users/dtos/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
-export class AuthController {
+export default class AuthController {
   // By using the 'private readonly', there is no need to assign the service in the body of the constructor
   constructor(private readonly authService: AuthService) {}
 

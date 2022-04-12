@@ -24,9 +24,8 @@
     "scripts": {
         "up": "docker-compose -f docker-compose.dev.yml up --build",
         "stop": "docker-compose -f docker-compose.dev.yml stop",
-        "down": "docker-compose -f docker-compose.dev.yml down -v",
-        "build:nestjs": "npm run docker:cleanup && (cd server; bash docker.build.sh)",
-        "connect:psql": "docker exec -it postgres psql -d nestjs -U admin",
+        "down": "docker-compose -f docker-compose.dev.yml down",
+        "psql": "docker exec -it postgres psql -d nestjs -U admin",
         "precommit": "concurrently \"npm audit --production\" \"npm run test:server\" \"npm run test:web\"",
         "test:server": "cd ./server && npm install --no-audit && npm run lint && npm run test && npm audit --audit-level=critical --production",
         "test:web": "cd ./web && npm install --no-audit && npm run lint && CI=true npm run test && npm audit --audit-level=critical --production"

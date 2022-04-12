@@ -5,17 +5,17 @@ import {
   ResponseBookDto,
   UpdateBookDto,
 } from './dtos/book.dto';
-import { ExtractorService } from '../../providers/extractor.service';
+import ExtractorService from '../../providers/extractor.service';
 import {
   DefaultNotFoundException,
   CollectionNotFoundException,
 } from '../../exceptions/notFound.exception';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BookEntity } from './entities/book.entity';
+import BookEntity from './entities/book.entity';
 import { DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
-export class BooksService {
+export default class BooksService {
   constructor(
     private extractor: ExtractorService,
     @InjectRepository(BookEntity)

@@ -1,4 +1,4 @@
-import { UsersService } from '../users/users.service';
+import UsersService from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import {
   BadRequestException,
@@ -10,7 +10,6 @@ import { ConfigService } from '@nestjs/config';
 import PostgresErrorCode from '../../../database/enums/postgresErrorCode.enum';
 import { TokenPayload } from './auth.interface';
 import { CreateUserDto, ResponseUserDto } from '../users/dtos/user.dto';
-import { UserEntity } from '../users/entities/user.entity';
 
 /*
 Authentication means checking the identity of user. It provides an 
@@ -19,7 +18,7 @@ Authorization is about access to resources. It answers the question:
 is user authorized to perform this operation?
 */
 @Injectable()
-export class AuthService {
+export default class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -31,10 +30,12 @@ export class AuthService {
   ): Promise<ResponseUserDto> {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
-      return this.usersService.create({
+      // Need to await for correct error catching, can't return immediately
+      const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
       });
+      return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         /*

@@ -8,8 +8,6 @@ import {
   Param,
   Body,
   UseGuards,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -21,14 +19,13 @@ import {
   PatchBookDto,
   ResponseBookDto,
 } from './dtos/book.dto';
-import { BooksService } from './books.service';
+import BooksService from './books.service';
 import { RequestWithUser } from '../auth/auth.interface';
 import { DeleteResult } from 'typeorm';
 
 @ApiTags('Books')
 @Controller('books')
-@UseInterceptors(ClassSerializerInterceptor)
-export class BooksController {
+export default class BooksController {
   constructor(private booksService: BooksService) {}
 
   @ApiOperation({

@@ -5,7 +5,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-export abstract class MetadataEntity {
+export default abstract class MetadataEntity {
   @Column({ type: 'boolean', default: true })
   readonly isActive: boolean;
 

@@ -7,7 +7,7 @@ import {
 import { Expose } from 'class-transformer';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { ResponseDto } from 'src/app/utils';
-import { BookEntity } from '../entities/book.entity';
+import BookEntity from '../entities/book.entity';
 
 class BookDto {
   @IsNotEmpty()

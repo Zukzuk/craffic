@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as unrar from 'node-unrar-js';
 import { ComicFileData, ComicFileExtractError } from './extractor.interface';
 
-export class ExtractorService {
+export default class ExtractorService {
   public async sync(dir: string, files: string[]): Promise<string> {
     const promises: Promise<ComicFileData | ComicFileExtractError>[] = [];
 

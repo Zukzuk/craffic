@@ -1,11 +1,11 @@
-import * as glob from 'glob';
+import * as dirTree from 'directory-tree';
 
-export class DirTreeService {
+export default class DirTreeService {
   constructor() {
-    // async dirTree for offline syncing
-    glob('../library/**/*/', (err, res) => {
-      if (err) console.log('Error', err);
-      else console.log('dirTree finds:', res);
+    const tree = dirTree('/Volumes', {
+      extensions: /\.(cbz|cbr|epub)$/,
+      attributes: ['size', 'type', 'extension'],
     });
+    console.log(JSON.stringify(tree));
   }
 }

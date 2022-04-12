@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
-import { UsersController } from './users.controller';
+import UsersService from './users.service';
+import UserEntity from './entities/user.entity';
+import UsersController from './users.controller';
+import AddressEntity from './entities/address.entity';
 
 @Module({
   // List of controllers defined in this module which are instantiated
@@ -11,7 +12,7 @@ import { UsersController } from './users.controller';
   // and that may be shared at least across this module
   providers: [UsersService],
   // List of imported modules that export the providers that are required in this module
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity, AddressEntity])],
   // Providers that should be available for import in other modules
   exports: [UsersService],
 })
@@ -20,4 +21,4 @@ The module encapsulates providers by default. This means that it's impossible to
 that are neither directly part of the current module nor exported from the imported modules. 
 Thus, you may consider the exported providers from a module as the module's public interface, or API.
 */
-export class UsersModule {}
+export default class UsersModule {}

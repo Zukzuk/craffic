@@ -7,12 +7,10 @@ import {
   Put,
   Patch,
   Delete,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import UsersService from './users.service';
 import {
   CreateUserDto,
   UpdateUserDto,
@@ -27,8 +25,7 @@ import { DeleteResult } from 'typeorm';
 
 @ApiTags('Users')
 @Controller('users')
-@UseInterceptors(ClassSerializerInterceptor)
-export class UsersController {
+export default class UsersController {
   /*
   UsersController declares a dependency on the UsersService 'token' with constructor injection.
   NestJS will associate the 'token' 'UsersService' with the 'class' 'UsersService' from the users.service.ts file. 

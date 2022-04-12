@@ -1,16 +1,18 @@
-import { MetadataEntity } from '../../../../database/entities/metadata.entity';
+import MetadataEntity from '../../../../database/entities/metadata.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { AddressEntity } from './address.entity';
+import AddressEntity from './address.entity';
 import { ROLES } from '../../auth/abac/auth.roles';
+import BookEntity from '../../books/entities/book.entity';
 
 @Entity({ name: 'user' })
-export class UserEntity extends MetadataEntity {
+export default class UserEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -37,7 +39,15 @@ export class UserEntity extends MetadataEntity {
   })
   public roles: ROLES[];
 
-  @OneToOne(() => AddressEntity)
+  @OneToOne(() => AddressEntity, {
+    // Always include related entities
+    eager: true,
+    // Always save related entity with this entity
+    cascade: true,
+  })
   @JoinColumn()
   public address: AddressEntity;
+
+  @OneToMany(() => BookEntity, (book: BookEntity) => book.owner)
+  public books: BookEntity[];
 }

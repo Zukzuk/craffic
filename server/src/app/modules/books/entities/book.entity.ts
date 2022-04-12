@@ -1,8 +1,17 @@
-import { MetadataEntity } from '../../../../database/entities/metadata.entity';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import MetadataEntity from '../../../../database/entities/metadata.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import UserEntity from '../../users/entities/user.entity';
+import CategoryEntity from './category.entity';
 
 @Entity({ name: 'book' })
-export class BookEntity extends MetadataEntity {
+export default class BookEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,4 +32,14 @@ export class BookEntity extends MetadataEntity {
 
   @Column({ type: 'varchar', length: 50 })
   public language: string;
+
+  @ManyToOne(() => UserEntity, (owner: UserEntity) => owner.books)
+  public owner: UserEntity;
+
+  @ManyToMany(
+    () => CategoryEntity,
+    (category: CategoryEntity) => category.books,
+  )
+  @JoinTable()
+  public categories: CategoryEntity[];
 }

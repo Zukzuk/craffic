@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { UserEntity } from '../users/entities/user.entity';
+import UserEntity from '../users/entities/user.entity';
 
 /*
 By using Passport strategies, we have access to the user through the request object.
