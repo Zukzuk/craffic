@@ -16,6 +16,7 @@ export class LocalStrategy extends PassportStrategy(LocalPassportStrategy) {
       usernameField: 'email',
     });
   }
+
   async validate(email: string, password: string): Promise<ResponseUserDto> {
     return this.authService.getAuthenticatedUser(email, password);
   }
@@ -33,11 +34,38 @@ export class JwtStrategy extends PassportStrategy(JwtPassportStrategy) {
           return request?.cookies?.Authentication;
         },
       ]),
-      secretOrKey: configService.get('JWT_SECRET'),
+      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET'),
     });
   }
 
-  async validate(payload: TokenPayload) {
-    return this.userService.getById(payload.userId);
+  async validate({ userId }: TokenPayload) {
+    return this.userService.findOne(userId);
+  }
+}
+
+@Injectable()
+export class JwtRefreshTokenStrategy extends PassportStrategy(
+  JwtPassportStrategy,
+  'jwt-refresh-token',
+) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly userService: UsersService,
+  ) {
+    super({
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return request?.cookies?.Refresh;
+        },
+      ]),
+      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      // needed to access the cookies in the validate method
+      passReqToCallback: true,
+    });
+  }
+
+  async validate(request: Request, { userId }: TokenPayload) {
+    const refreshToken = request.cookies?.Refresh;
+    return this.userService.getUserIfRefreshTokenMatches(userId, refreshToken);
   }
 }

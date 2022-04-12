@@ -19,17 +19,20 @@ export default class UserEntity extends MetadataEntity {
   @Column({ unique: true, type: 'varchar', length: 300 })
   public email: string;
 
-  @Column({ type: 'varchar', length: 300 })
+  @Column({ nullable: true, type: 'varchar', length: 300 })
   public userName?: string;
 
   @Column({ type: 'varchar', length: 300 })
   public name: string;
 
-  @Column({ type: 'varchar', length: 300 })
+  @Column({ nullable: true, type: 'varchar', length: 300 })
   public lastName?: string;
 
   @Column({ type: 'varchar' })
   public password: string;
+
+  @Column({ nullable: true, type: 'varchar' })
+  public refreshToken?: string;
 
   @Column({
     type: 'enum',

@@ -22,6 +22,8 @@ export default class BooksService {
     private booksRepository: Repository<BookEntity>,
   ) {}
 
+  // CRUD //
+
   async create(bookData: CreateBookDto): Promise<ResponseBookDto> {
     const newBook = await this.booksRepository.create(bookData);
     const savedBook = await this.booksRepository.save(newBook);
@@ -63,6 +65,8 @@ export default class BooksService {
   async delete(id: string): Promise<DeleteResult> {
     return this.booksRepository.delete({ id });
   }
+
+  // CUSTOM //
 
   async sync(): Promise<string> {
     const extractedMsg = this.extractor.sync('../library', [

@@ -74,15 +74,43 @@ export default class AuthService {
     }
   }
 
-  public getCookieWithJwtToken(userId: string): string {
+  public getCookieWithJwtAccessToken(userId: string): string {
     const payload: TokenPayload = { userId };
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_EXPIRATION_TIME',
-    )}`;
+    const expiresIn = this.configService.get(
+      'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+    );
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      expiresIn: `${expiresIn}s`,
+    });
+
+    return `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
   }
 
-  public getCookieClearedForLogOut(): string {
-    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  public async getCookieWithJwtRefreshToken(userId: string): Promise<string> {
+    const payload: TokenPayload = { userId };
+    const expiresIn = this.configService.get(
+      'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+    );
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn: `${expiresIn}s`,
+    });
+    const isSaved = await this.usersService.setRefreshToken(
+      userId,
+      refreshToken,
+    );
+
+    return isSaved
+      ? `Refresh=${refreshToken}; HttpOnly; Path=/auth; Max-Age=${expiresIn}`
+      : 'Refresh=; HttpOnly; Path=/auth; Max-Age=0';
+  }
+
+  public async clearAuthForLogout(userId: string): Promise<string[]> {
+    await this.usersService.nullifyRefreshToken(userId);
+    return [
+      'Authentication=; HttpOnly; Path=/; Max-Age=0',
+      'Refresh=; HttpOnly; Path=/auth; Max-Age=0',
+    ];
   }
 }

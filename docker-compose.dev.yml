@@ -30,7 +30,7 @@ services:
     container_name: nestjs-server
     build:
       context: ./server
-      dockerfile: Dockerfile.dev
+      dockerfile: dockerfile.dev
       # Tell compose to only build the 'development' stage of the docker file
       target: development
     volumes:

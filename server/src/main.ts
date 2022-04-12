@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Add global validation
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // Add global class serializer interceptor
   // and exclude all data by default

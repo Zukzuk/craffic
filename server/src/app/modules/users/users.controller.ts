@@ -57,7 +57,7 @@ export default class UsersController {
   @Get(':id')
   @UseGuards(PermissionGuard(UserClaims.CanReadUser))
   async findOne(@Param('id') id: string): Promise<ResponseUserDto> {
-    return this.usersService.getById(id);
+    return this.usersService.findOne(id);
   }
 
   @ApiOperation({

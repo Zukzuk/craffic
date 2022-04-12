@@ -5,8 +5,11 @@ import {
   PickType,
 } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsArray } from 'class-validator';
 import { ResponseDto } from 'src/app/utils';
+import { ROLES } from '../../auth/abac/auth.roles';
+import BookEntity from '../../books/entities/book.entity';
+import AddressEntity from '../entities/address.entity';
 
 class UserDto {
   @IsNotEmpty()
@@ -22,13 +25,11 @@ class UserDto {
   })
   readonly email: string;
 
-  @IsNotEmpty()
   @IsString()
-  @ApiProperty({
-    minLength: 12,
-    default: 'testpassword',
+  @ApiPropertyOptional({
+    maxLength: 300,
   })
-  readonly password: string;
+  readonly userName?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -43,11 +44,29 @@ class UserDto {
   })
   readonly lastName?: string;
 
+  @IsNotEmpty()
   @IsString()
-  @ApiPropertyOptional({
-    maxLength: 300,
+  @ApiProperty({
+    minLength: 12,
+    default: 'testpassword',
   })
-  readonly userName?: string;
+  readonly password: string;
+
+  @IsString()
+  public refreshToken: string;
+
+  @IsNotEmpty()
+  @IsArray()
+  @ApiProperty({
+    default: [ROLES.WEBCLIENT_USER],
+  })
+  readonly roles: ROLES[];
+
+  @IsArray()
+  readonly address: AddressEntity;
+
+  @IsArray()
+  readonly books: BookEntity[];
 }
 
 export class CreateUserDto extends PickType(UserDto, [
