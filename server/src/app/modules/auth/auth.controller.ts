@@ -44,7 +44,7 @@ export default class AuthController {
   @Put('refresh')
   @UseGuards(JwtRefreshGuard)
   async refresh(@Req() request: RequestWithUser): Promise<ResponseUserDto> {
-    console.log(request.user)
+    console.log(request.user);
     await this.setAuthenticatedCookies(request);
     return new ResponseUserDto(request.user);
   }
