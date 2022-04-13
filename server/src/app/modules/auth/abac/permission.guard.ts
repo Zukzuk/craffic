@@ -1,44 +1,42 @@
-import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
-import UserClaims from '../../users/claims/user.claim';
-import { JwtAuthGuard } from '../auth.guards';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { RequestWithUser } from '../auth.interface';
 import { ClaimsMap } from './auth.roles';
 import Permission from './permission.type';
+import { Reflector } from '@nestjs/core';
 
-const PermissionGuard = (
-  permission: Permission | Permission[],
-): Type<CanActivate> => {
-  class PermissionGuardMixin extends JwtAuthGuard {
-    async canActivate(context: ExecutionContext) {
-      await super.canActivate(context);
+@Injectable()
+export default class PermissionGuard implements CanActivate {
+  constructor(private readonly reflector: Reflector) {}
 
-      // user is available on the request because we extend the JwtAuthGuard
-      const { user, params } = context
-        .switchToHttp()
-        .getRequest<RequestWithUser>();
-
-      // reduce roles to a list of available claims
-      const allClaims = user?.roles.reduce<Permission[]>((acc, role) => {
-        const claims = acc.concat(ClaimsMap[role]);
-        return claims;
-      }, []);
-
-      // check if user is an owner of the resource
-      const isOwner =
-        allClaims.includes(UserClaims.CanImpersonateUser) ||
-        user?.id === params?.id;
-
-      // check if user has permission to interact with the resource
-      const permissions = Array.isArray(permission) ? permission : [permission];
-      const hasPermission =
-        isOwner && permissions.every((claim) => allClaims.includes(claim));
-
-      // return resulting boolean
-      return hasPermission;
+  canActivate(context: ExecutionContext): boolean {
+    // grab all needed permissions from the @Permissions decorator
+    const permissions = this.reflector.get<Permission[]>(
+      'permissions',
+      context.getHandler(),
+    );
+    if (!permissions?.length) {
+      throw new Error(
+        `No permissions found while PermissionGuard is applied.
+        Please either remove the PermissionGuard or add claims 
+        through the @Permissions decorator.`,
+      );
     }
+
+    // user is available on the request because we extend the JwtAuthGuard
+    const { user } = context.switchToHttp().getRequest<RequestWithUser>();
+
+    // reduce roles to a list of assigned claims
+    const assignedClaims = user?.roles.reduce<Permission[]>((acc, role) => {
+      const claims = acc.concat(ClaimsMap[role]);
+      return claims;
+    }, []);
+
+    // check if user has permission to interact with the resource
+    const hasPermission = permissions.every((claim) =>
+      assignedClaims.includes(claim),
+    );
+
+    // return resulting boolean
+    return hasPermission;
   }
-
-  return mixin(PermissionGuardMixin);
-};
-
-export default PermissionGuard;
+}

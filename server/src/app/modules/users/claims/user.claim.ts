@@ -4,6 +4,5 @@ enum UserClaims {
   CanReadAllUsers = 'UserClaims.CanReadAllUsers',
   CanUpdateUser = 'UserClaims.CanUpdateUser',
   CanDeleteUser = 'UserClaims.CanDeleteUser',
-  CanImpersonateUser = 'UserClaims.CanImpersonateUser',
 }
 export default UserClaims;

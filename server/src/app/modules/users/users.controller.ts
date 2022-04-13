@@ -21,7 +21,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RequestWithUser } from '../auth/auth.interface';
 import UserClaims from './claims/user.claim';
 import PermissionGuard from '../auth/abac/permission.guard';
+import { Permissions } from '../auth/abac/permission.decorator';
 import { DeleteResult } from 'typeorm';
+import { JwtAuthGuard } from '../auth/abac/auth.guards';
+import OwnerGuard from '../auth/abac/owner.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -37,7 +40,8 @@ export default class UsersController {
     summary: 'Create a new User',
   })
   @Post()
-  @UseGuards(PermissionGuard(UserClaims.CanCreateUser))
+  @Permissions(UserClaims.CanCreateUser)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async create(@Body() userData: CreateUserDto): Promise<ResponseUserDto> {
     return this.usersService.create(userData);
   }
@@ -46,7 +50,8 @@ export default class UsersController {
     summary: 'Get the Users collection',
   })
   @Get()
-  @UseGuards(PermissionGuard(UserClaims.CanReadAllUsers))
+  @Permissions(UserClaims.CanReadAllUsers)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async findAll(): Promise<ResponseUserDto[]> {
     return this.usersService.findAll();
   }
@@ -55,7 +60,8 @@ export default class UsersController {
     summary: 'Get an User by ID',
   })
   @Get(':id')
-  @UseGuards(PermissionGuard(UserClaims.CanReadUser))
+  @Permissions(UserClaims.CanReadUser)
+  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
   async findOne(@Param('id') id: string): Promise<ResponseUserDto> {
     return this.usersService.findOne(id);
   }
@@ -64,7 +70,8 @@ export default class UsersController {
     summary: 'Update a User by ID',
   })
   @Put(':id')
-  @UseGuards(PermissionGuard(UserClaims.CanUpdateUser))
+  @Permissions(UserClaims.CanUpdateUser)
+  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
   async update(
     @Param('id') id: string,
     @Body() userData: UpdateUserDto,
@@ -80,7 +87,8 @@ export default class UsersController {
     summary: 'Update a part of a User by ID',
   })
   @Patch(':id')
-  @UseGuards(PermissionGuard(UserClaims.CanUpdateUser))
+  @Permissions(UserClaims.CanUpdateUser)
+  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
   async patch(
     @Param('id') id: string,
     @Body() partialUserData: PatchUserDto,
@@ -96,7 +104,8 @@ export default class UsersController {
     summary: 'Delete a User by ID',
   })
   @Delete(':id')
-  @UseGuards(PermissionGuard(UserClaims.CanDeleteUser))
+  @Permissions(UserClaims.CanDeleteUser)
+  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
   async remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.usersService.delete(id);
   }

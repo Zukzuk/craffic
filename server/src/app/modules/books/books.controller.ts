@@ -22,6 +22,8 @@ import {
 import BooksService from './books.service';
 import { RequestWithUser } from '../auth/auth.interface';
 import { DeleteResult } from 'typeorm';
+import { Permissions } from '../auth/abac/permission.decorator';
+import { JwtAuthGuard } from '../auth/abac/auth.guards';
 
 @ApiTags('Books')
 @Controller('books')
@@ -32,7 +34,8 @@ export default class BooksController {
     summary: 'Create a new Book',
   })
   @Post()
-  @UseGuards(PermissionGuard(BookClaims.CanCreateBook))
+  @Permissions(BookClaims.CanCreateBook)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async create(@Body() bookData: CreateBookDto): Promise<ResponseBookDto> {
     return this.booksService.create(bookData);
   }
@@ -41,7 +44,8 @@ export default class BooksController {
     summary: 'Get the Books collection',
   })
   @Get()
-  @UseGuards(PermissionGuard(BookClaims.CanReadAllBooks))
+  @Permissions(BookClaims.CanReadAllBooks)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async findAll(): Promise<ResponseBookDto[]> {
     return this.booksService.findAll();
   }
@@ -50,7 +54,8 @@ export default class BooksController {
     summary: 'Get a Book by ID',
   })
   @Get(':id')
-  @UseGuards(PermissionGuard(BookClaims.CanReadBook))
+  @Permissions(BookClaims.CanReadBook)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async findOne(@Param('id') id: string): Promise<ResponseBookDto> {
     return this.booksService.findOne(id);
   }
@@ -59,7 +64,8 @@ export default class BooksController {
     summary: 'Update a Book by ID',
   })
   @Put(':id')
-  @UseGuards(PermissionGuard(BookClaims.CanUpdateBook))
+  @Permissions(BookClaims.CanUpdateBook)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async update(
     @Param('id') id: string,
     @Body() bookData: UpdateBookDto,
@@ -75,7 +81,8 @@ export default class BooksController {
     summary: 'Update a part of a Book by ID',
   })
   @Patch(':id')
-  @UseGuards(PermissionGuard(BookClaims.CanUpdateBook))
+  @Permissions(BookClaims.CanUpdateBook)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async patch(
     @Param('id') id: string,
     @Body() partialBookData: PatchBookDto,
@@ -91,7 +98,8 @@ export default class BooksController {
     summary: 'Remove a Book by ID',
   })
   @Delete(':id')
-  @UseGuards(PermissionGuard(BookClaims.CanDeleteBook))
+  @Permissions(BookClaims.CanDeleteBook)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
   async remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.booksService.delete(id);
   }

@@ -9,7 +9,11 @@ import {
   Put,
 } from '@nestjs/common';
 import AuthService from './auth.service';
-import { JwtAuthGuard, JwtRefreshGuard, LocalAuthGuard } from './auth.guards';
+import {
+  JwtAuthGuard,
+  JwtRefreshGuard,
+  LocalAuthGuard,
+} from './abac/auth.guards';
 import { LogInDto } from './dtos/auth.dto';
 import { RequestWithUser } from './auth.interface';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
