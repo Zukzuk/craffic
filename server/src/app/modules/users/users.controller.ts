@@ -24,7 +24,7 @@ import PermissionGuard from '../auth/abac/permission.guard';
 import { Permissions } from '../auth/abac/permission.decorator';
 import { DeleteResult } from 'typeorm';
 import { JwtAuthGuard } from '../auth/abac/auth.guards';
-import OwnerGuard from '../auth/abac/owner.guard';
+import SelfGuard from '../auth/abac/self.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -61,7 +61,7 @@ export default class UsersController {
   })
   @Get(':id')
   @Permissions(UserClaims.CanReadUser)
-  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SelfGuard)
   async findOne(@Param('id') id: string): Promise<ResponseUserDto> {
     return this.usersService.findOne(id);
   }
@@ -71,16 +71,16 @@ export default class UsersController {
   })
   @Put(':id')
   @Permissions(UserClaims.CanUpdateUser)
-  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SelfGuard)
   async update(
     @Param('id') id: string,
     @Body() userData: UpdateUserDto,
     @Req() request: RequestWithUser,
   ): Promise<ResponseUserDto> {
     const {
-      user: { id: requesterId },
+      user: { id: ownerId },
     } = request;
-    return this.usersService.updateOrPatch(id, userData, requesterId);
+    return this.usersService.updateOrPatch(id, userData, ownerId);
   }
 
   @ApiOperation({
@@ -88,16 +88,16 @@ export default class UsersController {
   })
   @Patch(':id')
   @Permissions(UserClaims.CanUpdateUser)
-  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SelfGuard)
   async patch(
     @Param('id') id: string,
     @Body() partialUserData: PatchUserDto,
     @Req() request: RequestWithUser,
   ): Promise<ResponseUserDto> {
     const {
-      user: { id: requesterId },
+      user: { id: ownerId },
     } = request;
-    return this.usersService.updateOrPatch(id, partialUserData, requesterId);
+    return this.usersService.updateOrPatch(id, partialUserData, ownerId);
   }
 
   @ApiOperation({
@@ -105,7 +105,7 @@ export default class UsersController {
   })
   @Delete(':id')
   @Permissions(UserClaims.CanDeleteUser)
-  @UseGuards(JwtAuthGuard, PermissionGuard, OwnerGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard, SelfGuard)
   async remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.usersService.delete(id);
   }

@@ -1,6 +1,6 @@
 import UserClaims from '../../users/claims/user.claim';
 import BookClaims from '../../books/claims/book.claim';
-import OwnerClaims from '../../users/claims/owner.claim';
+import SelfClaims from '../../users/claims/self.claim';
 
 export enum ROLES {
   WEBCLIENT_USER = 'WEBCLIENT_USER',
@@ -15,7 +15,7 @@ export const ClaimsMap = {
     ...Object.values(BookClaims),
   ],
   [ROLES.SERVER_ADMIN]: [
-    ...Object.values(OwnerClaims),
+    ...Object.values(SelfClaims),
     ...Object.values(UserClaims),
     ...Object.values(BookClaims),
   ],

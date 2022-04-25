@@ -11,7 +11,7 @@ import AddressEntity from './address.entity';
 import { ROLES } from '../../auth/abac/auth.roles';
 import BookEntity from '../../books/entities/book.entity';
 
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 export default class UserEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;

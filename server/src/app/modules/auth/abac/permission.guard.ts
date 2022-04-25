@@ -22,7 +22,7 @@ export default class PermissionGuard implements CanActivate {
       );
     }
 
-    // user is available on the request because we extend the JwtAuthGuard
+    // user is available on the request because we use the JwtAuthGuard
     const { user } = context.switchToHttp().getRequest<RequestWithUser>();
 
     // reduce roles to a list of assigned claims
@@ -31,7 +31,7 @@ export default class PermissionGuard implements CanActivate {
       return claims;
     }, []);
 
-    // check if user has permission to interact with the resource
+    // check if user has all permissions to interact with the requested resource
     const hasPermission = permissions.every((claim) =>
       assignedClaims.includes(claim),
     );

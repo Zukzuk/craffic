@@ -21,13 +21,14 @@ class UserDto {
   @IsEmail()
   @ApiProperty({
     maxLength: 300,
-    default: 'test.user@domain.com',
+    default: 'dave.timmerman@gmail.com',
   })
   readonly email: string;
 
   @IsString()
   @ApiPropertyOptional({
     maxLength: 300,
+    default: 'Zukzuk',
   })
   readonly userName?: string;
 
@@ -35,12 +36,14 @@ class UserDto {
   @IsString()
   @ApiProperty({
     maxLength: 300,
+    default: 'Dave',
   })
   readonly name: string;
 
   @IsString()
   @ApiPropertyOptional({
     maxLength: 300,
+    default: 'Timmerman',
   })
   readonly lastName?: string;
 

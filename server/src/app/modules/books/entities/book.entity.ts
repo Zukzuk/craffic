@@ -6,11 +6,12 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import UserEntity from '../../users/entities/user.entity';
 import CategoryEntity from './category.entity';
 
-@Entity({ name: 'book' })
+@Entity({ name: 'books' })
 export default class BookEntity extends MetadataEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -27,12 +28,15 @@ export default class BookEntity extends MetadataEntity {
   @Column({ type: 'varchar' })
   public description: string;
 
-  @Column({ type: 'int' })
-  public year: number;
+  @Column({ nullable: true, type: 'int' })
+  public year?: number;
 
-  @Column({ type: 'varchar', length: 50 })
-  public language: string;
+  @Column({ nullable: true, type: 'varchar', length: 50 })
+  public language?: string;
 
+  @Column()
+  ownerId: string;
+  @JoinColumn({ name: 'ownerId' })
   @ManyToOne(() => UserEntity, (owner: UserEntity) => owner.books)
   public owner: UserEntity;
 

@@ -3,7 +3,7 @@ import * as chokidar from 'chokidar';
 export default class ChokidarService {
   constructor() {
     // chokidar watcher for realtime syncing
-    const watcher = chokidar.watch('../library', {
+    const watcher = chokidar.watch('../../library', {
       ignored: /[\/\\]\./,
     });
     watcher.on('all', (event, path) => {

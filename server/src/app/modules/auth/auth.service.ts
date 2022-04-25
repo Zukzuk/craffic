@@ -74,6 +74,13 @@ export default class AuthService {
     }
   }
 
+  /*
+   * Access tokens: usually short-lived JWT Tokens that are signed by your server and are included in every
+   * HTTP request to your server to authorize the request.
+   * Discussion: https://indepth.dev/posts/1382/localstorage-vs-cookies
+   * Cookie params: domain and path is used to restrict which requested resource the cookie can be applied,
+   * while SameSite is used to restrict where that request should be originated.
+   */
   public getCookieWithJwtAccessToken(userId: string): string {
     const payload: TokenPayload = { userId };
     const expiresIn = this.configService.get(
@@ -87,6 +94,10 @@ export default class AuthService {
     return `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
   }
 
+  /*
+   * Refresh tokens are usually long-lived opaque strings that are stored in your database and used to get
+   * a new access token when it expires.
+   */
   public async getCookieWithJwtRefreshToken(userId: string): Promise<string> {
     const payload: TokenPayload = { userId };
     const expiresIn = this.configService.get(

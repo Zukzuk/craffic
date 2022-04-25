@@ -15,9 +15,6 @@ export default abstract class MetadataEntity {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly createDateTime: Date;
 
-  @Column({ type: 'varchar', length: 300, nullable: true })
-  readonly createdBy?: string;
-
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   lastChangedDateTime: Date;
 

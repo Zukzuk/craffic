@@ -36,8 +36,11 @@ export default class BooksController {
   @Post()
   @Permissions(BookClaims.CanCreateBook)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  async create(@Body() bookData: CreateBookDto): Promise<ResponseBookDto> {
-    return this.booksService.create(bookData);
+  async create(
+    @Body() bookData: CreateBookDto,
+    @Req() request: RequestWithUser,
+  ): Promise<ResponseBookDto> {
+    return this.booksService.create(bookData, request.user);
   }
 
   @ApiOperation({
@@ -72,9 +75,9 @@ export default class BooksController {
     @Req() request: RequestWithUser,
   ): Promise<ResponseBookDto> {
     const {
-      user: { id: requesterId },
+      user: { id: ownerId },
     } = request;
-    return this.booksService.updateOrPatch(id, bookData, requesterId);
+    return this.booksService.updateOrPatch(id, bookData, ownerId);
   }
 
   @ApiOperation({
@@ -89,9 +92,9 @@ export default class BooksController {
     @Req() request: RequestWithUser,
   ): Promise<ResponseBookDto> {
     const {
-      user: { id: requesterId },
+      user: { id: ownerId },
     } = request;
-    return this.booksService.updateOrPatch(id, partialBookData, requesterId);
+    return this.booksService.updateOrPatch(id, partialBookData, ownerId);
   }
 
   @ApiOperation({
@@ -100,15 +103,13 @@ export default class BooksController {
   @Delete(':id')
   @Permissions(BookClaims.CanDeleteBook)
   @UseGuards(JwtAuthGuard, PermissionGuard)
-  async remove(@Param('id') id: string): Promise<DeleteResult> {
-    return this.booksService.delete(id);
-  }
-
-  @ApiOperation({
-    summary: 'Sync Books to database',
-  })
-  @Post('/sync')
-  async sync(): Promise<string> {
-    return this.booksService.sync();
+  async remove(
+    @Param('id') id: string,
+    @Req() request: RequestWithUser,
+  ): Promise<DeleteResult> {
+    const {
+      user: { id: ownerId },
+    } = request;
+    return this.booksService.delete(id, ownerId);
   }
 }

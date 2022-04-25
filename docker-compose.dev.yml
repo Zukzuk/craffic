@@ -33,19 +33,25 @@ services:
       dockerfile: dockerfile.dev
       # Tell compose to only build the 'development' stage of the docker file
       target: development
+     # This runs after 'development' stage is completed
+    command: npm run start:dev
     volumes:
-    # Use bind mount to make development dir available in container
+    # Use bind mount to make hot reloading possible in containerized dev env:
+    # When we change a file on our host machine, the file will also be changed in the container, hence 'bind'. 
+    # The NestJS dev server, while still running inside the container, will keep restarting on each file change.
     - ./server:/usr/src/app
-    # Make empty node_modules dir available in container
+    # Use an anonymous volume to prevent the container's node_modules to be overridden by the host's node_modules.
+    # This should be prevented because the host's node_modules might be different and can cause problems when reflected in the container.
+    # This is a seperate issue from 'COPY . .' in dockerfile, where overwriting the node_modules is prevented by the .dockerignore.
     - /usr/src/app/node_modules
+    # Add hardcoded library volume for now
+    - ./library:/usr/library
     ports:
     - 4000:4000
     # For debugging purposes
     - 9229:9229
-    # This runs after development stage is done
-    command: npm run start:dev
     networks:
-    - network-postgres
+    - postgres
     depends_on:
     - redis
     - postgres
@@ -56,19 +62,19 @@ services:
     env_file:
     - .env
     networks:
-    - network-postgres
+    - postgres
 
   postgres:
     container_name: postgres
     image: postgres:latest
     networks:
-    - network-postgres
+    - postgres
     env_file:
     - .env
     ports:
     - 5432:5432
     volumes:
-    - /data/postgres:/data/postgres
+    - pgdata:/var/lib/postgresql/data
     restart: always
 
   pgadmin:
@@ -79,12 +85,16 @@ services:
     ports:
     - 8080:80
     volumes:
-    - /data/pgadmin:/root/.pgadmin
+    - pgadmindata:/var/lib/pgadmin/data
     env_file:
     - .env
     networks:
-    - network-postgres
+    - postgres
 
 networks:
-  network-postgres:
+  postgres:
     driver: bridge
+
+volumes:
+  pgdata:
+  pgadmindata:

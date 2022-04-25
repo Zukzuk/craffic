@@ -50,12 +50,12 @@ export default class UsersService {
   async updateOrPatch(
     id: string,
     userData: UpdateUserDto | PatchUserDto,
-    requesterId: string,
+    ownerId: string,
   ): Promise<ResponseUserDto> {
     const modifiedUser = await this.usersRepository.create({
       id,
       ...userData,
-      lastChangedBy: requesterId,
+      lastChangedBy: ownerId,
     });
 
     /*

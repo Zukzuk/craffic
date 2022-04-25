@@ -22,7 +22,7 @@
         "lint-staged": "^12.3.4"
     },
     "scripts": {
-        "up": "docker-compose -f docker-compose.dev.yml up --build",
+        "up": "docker-compose -f docker-compose.dev.yml up -d",
         "stop": "docker-compose -f docker-compose.dev.yml stop",
         "down": "docker-compose -f docker-compose.dev.yml down",
         "psql": "docker exec -it postgres psql -d nestjs -U admin",

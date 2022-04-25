@@ -9,18 +9,21 @@ export class AddressDto {
   @IsString()
   @ApiProperty({
     maxLength: 300,
+    default: 'Spaklerweg',
   })
   public street: string;
 
   @IsString()
   @ApiProperty({
     maxLength: 300,
+    default: 'Amsterdam',
   })
   public city: string;
 
   @IsString()
   @ApiProperty({
     maxLength: 300,
+    default: 'Netherlands',
   })
   public country: string;
 

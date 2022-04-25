@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import BookEntity from './book.entity';
 
-@Entity()
-class CategoryEntity {
+@Entity({ name: 'categories' })
+export default class CategoryEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -12,5 +12,3 @@ class CategoryEntity {
   @ManyToMany(() => BookEntity, (book: BookEntity) => book.categories)
   public books: BookEntity[];
 }
-
-export default CategoryEntity;

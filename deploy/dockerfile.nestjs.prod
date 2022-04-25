@@ -11,9 +11,9 @@ ARG NESTJS_PORT=${NESTJS_PORT}
 FROM node:16.14-alpine as development
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
-COPY package*.json . ./
+COPY package*.json ../server ./
 RUN npm install --loglevel verbose
-COPY . .
+COPY ../server .
 RUN ls
 
 ### BUILDER ###

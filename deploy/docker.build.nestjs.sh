@@ -21,7 +21,7 @@ echo "NESTJS_PORT: $NESTJS_PORT"
 echo "DOCKER_CMD: $DOCKER_CMD"
 
 docker build \
-    --file Dockerfile.prod
+    --file dockerfile.nestjs.prod
     --no-cache \
     --progress=plain \
     -t $IMG_HASH -t $IMG_TAG -t $IMG_LATEST \

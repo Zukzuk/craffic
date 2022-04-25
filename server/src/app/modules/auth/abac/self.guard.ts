@@ -1,16 +1,16 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import OwnerClaims from '../../users/claims/owner.claim';
+import SelfClaims from '../../users/claims/self.claim';
 import { RequestWithUser } from '../auth.interface';
 import { ClaimsMap } from './auth.roles';
 import Permission from './permission.type';
 
 @Injectable()
-export default class OwnerGuard implements CanActivate {
+export default class SelfGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    // user is available on the request because we extend the JwtAuthGuard
+    // user is available on the request because we use the JwtAuthGuard
     const { user, params } = context
       .switchToHttp()
       .getRequest<RequestWithUser>();
@@ -21,13 +21,11 @@ export default class OwnerGuard implements CanActivate {
       return claims;
     }, []);
 
-    // check if user is the owner of the resource
-    const isOwner =
-      assignedClaims.some(
-        (claim) => claim === OwnerClaims.CanImpersonateUser,
-      ) || user.id === params.id;
+    // check if the requesting user can be identified as 'self'
+    const isAdmin = assignedClaims.includes(SelfClaims.CanImpersonateUser);
+    const isSelf = isAdmin || params.id === user.id;
 
     // return resulting boolean
-    return isOwner;
+    return isSelf;
   }
 }
