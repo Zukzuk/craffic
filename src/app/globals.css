@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.thin-scroll::-webkit-scrollbar {
+  overflow-y: scroll;
+  width: 10px;
+}
+
+.thin-scroll::-webkit-scrollbar-track {
+  background: rgb(33, 33, 33);
+  cursor: pointer;
+}
+
+.thin-scroll-inline::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: rgb(66, 66, 66);
+}
+
+.thin-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(99, 99, 99);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(158, 158, 158)
+}

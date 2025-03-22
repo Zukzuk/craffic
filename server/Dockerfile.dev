@@ -1,8 +1,0 @@
-### DEVELOPMENT ###
-FROM node:16.14-alpine As development
-WORKDIR /usr/src/app
-ENV NODE_ENV=development
-COPY package*.json . ./
-RUN npm install --loglevel verbose
-COPY . .
-RUN ls

@@ -1,20 +1,36 @@
-# C R A F F I C
-A modern Graphic-Novel Library
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## WEB-CLIENT
-### Getting Started with Create React App
-This web project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Create React App is a fully configured frontend environment, and is the best way to start building a new single-page application in React. 
+## Getting Started
 
-[Goto web project README](./web/README.md)
+First, run the development server:
 
-## SERVER / API
-### Getting Started with NestJS
-A progressive [NodeJS](https://nodejs.org) framework for building efficient and scalable server-side applications. This server project was bootstrapped with [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-[Goto server project README](./server/README.md)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## DATABASE / TYPEORM
-### Getting Started with PostgreSQL
-NestJS, TypeORM and PostgreSQL — full example development and project setup working with database migrations.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-[Medium](https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f)
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

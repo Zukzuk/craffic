@@ -3,58 +3,39 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
-
-# environments
-docker.env
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # testing
 /coverage
 
+# next.js
+/.next/
+/out/
+
 # production
 /build
-/library
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+*.pem
 
-# compiled output
-/dist
-/persist
-/node_modules
-
-# Logs
-logs
-*.log
+# debug
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+.pnpm-debug.log*
 
-# OS
-.DS_Store
+# env files (can opt-in for committing if needed)
+.env*
 
-# Tests
-/coverage
-/.nyc_output
+# vercel
+.vercel
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# typescript
+*.tsbuildinfo
+next-env.d.ts

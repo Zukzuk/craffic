@@ -1,0 +1,43 @@
+{
+    "dir": "mounts/comics",
+    "children": [
+        {
+            "dir": "mounts/comics/series_name_01",
+            "children": [
+                {
+                    "dir": "mounts/comics/series_name_01/sub_series_name_01",
+                    "children": [
+                        {
+                            "file": "series01_subseries01_book01.cbr"
+                        }
+                    ]
+                },
+                {
+                    "dir": "mounts/comics/series_name_01/sub_series_name_02",
+                    "children": [
+                        {
+                            "file": "series01_subseries02_book01.cbr"
+                        },
+                        {
+                            "file": "series01_subseries02_book02cbr"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "dir": "mounts/comics/series_name_02",
+            "children": [
+                {
+                    "file": "series02_book01.cbz"
+                },
+                {
+                    "file": "series02_book02.cbz"
+                },
+                {
+                    "file": "series02_book03.cbz"
+                }
+            ]
+        }
+    ]
+}
